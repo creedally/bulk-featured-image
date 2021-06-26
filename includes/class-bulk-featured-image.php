@@ -1,0 +1,196 @@
+<?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Check BFIE class_exists or not.
+ */
+if ( ! class_exists( 'BFIE' ) ) {
+
+	/**
+	 * The core plugin class.
+	 *
+	 * This is used to define internationalization, admin-specific hooks, and
+	 * public-facing site hooks.
+	 *
+	 * Also maintains the unique identifier of this plugin as well as the current
+	 * version of the plugin.
+	 *
+	 * @since      1.0.0
+	 */
+	class BFIE {
+
+		/**
+		 * The instance of this class. 
+		 */
+
+		private static $instance;
+
+		public static function get_instance() {
+			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof BFIE ) ) {
+				self::$instance = new BFIE;
+				self::$instance->includes();
+				self::$instance->setup_actions();
+			}
+
+			return self::$instance;
+		}
+
+		/**
+		 * Define the core functionality of the plugin.
+		 */
+		private function __construct() {
+			self::$instance = $this;
+		}
+
+		private function includes() {
+			
+			/**
+			 * The function responsible for all common function of this plugin.
+			 */
+			require_once BFIE_PATH . '/includes/functions.php';
+
+			/**
+			 * The class responsible for defining list tabele functionality
+			 * of the plugin.
+			 */
+			require_once BFIE_PATH . '/admin/class-bfi-list-table.php';
+
+			/**
+			 * The class responsible for defining all actions that occur in the admin area.
+			 */
+			require_once BFIE_PATH . '/admin/class-bulk-featured-image-admin.php';
+
+			/**
+			 * The class responsible for defining all settings fileds occur in the admin area.
+			 */
+			require_once BFIE_PATH . '/admin/class-bulk-featured-image-settings-fields.php';
+		}
+
+		/**
+		 * Setup actions.
+		 */
+		private function setup_actions() {
+			
+			$pluing_name = BFIE_PLUGIN_BASENAME;
+			add_action( "plugin_action_links_{$pluing_name}", array($this ,'plugin_settings_link'));
+			add_action( 'admin_init', array( $this, 'activation_redirect' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+			add_action( 'init', array( $this, 'load_textdomain' ) );
+			add_action('has_post_thumbnail', array( $this, 'has_post_thumbnail'), 10, 2 );
+			add_action('post_thumbnail_html', array( $this, 'post_thumbnail_html'), 10, 2 );
+		}
+
+		/**
+		 * Settings for plugin link.
+		 */
+		public function plugin_settings_link( $links ) {
+
+			$action_links = array(
+				'settings' => '<a href="' . admin_url( 'admin.php?page='.BFIE_MENU_SLUG ) . '" aria-label="' . __( 'Settings', 'bulk-featured-image' ) . '">' . esc_html__( 'Settings', 'bulk-featured-image' ) . '</a>',
+			);
+
+			return array_merge( $action_links, $links );
+		}
+
+		/**
+		 * Activation redirect.
+		 */
+		public function activation_redirect() {
+
+			if ( !get_transient( '_bfie_activation_redirect' ) ) {
+				return;
+			}
+	
+			delete_transient( '_bfie_activation_redirect' );
+
+			if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
+				return;
+			}
+	
+			wp_safe_redirect( admin_url( 'admin.php?page='.BFIE_MENU_SLUG ) );
+			exit;
+		}
+
+		/**
+		 * Register the JavaScript and Style for the admin area.
+		 *
+		 * @since    1.0.0
+		 */
+		public function enqueue_admin_scripts() {
+			
+			if( !empty($_REQUEST['page']) && $_REQUEST['page'] == BFIE_MENU_SLUG ) {
+				wp_enqueue_style('bootstrap-style',BFIE_PLUGIN_URL.'assets/css/bootstrap.min.css');
+			}
+			wp_enqueue_style('select2-style', BFIE_PLUGIN_URL.'assets/css/select2.min.css');
+			wp_enqueue_style('bulk-featured-image',BFIE_PLUGIN_URL.'assets/css/bulk-featured-image-admin.css');
+
+			wp_enqueue_script( 'select2-script', BFIE_PLUGIN_URL . 'assets/js/select2.min.js', array( 'jquery', ), '', true );
+			wp_enqueue_script( 'bulk-featured-image', BFIE_PLUGIN_URL . 'assets/js/bulk-featured-image-admin.js', array( 'jquery', ), '', true );
+		}
+
+		/**
+		 * Register the JavaScript and Style for the public area.
+		 *
+		 * @since    1.0.0
+		 */
+		public function enqueue_scripts() {
+
+		}
+
+		/**
+		 * Load textdomain.
+		 *
+		 * @since    1.0.0
+		 */
+		public function load_textdomain() {
+			load_plugin_textdomain( 'bulk-featured-image', false, basename( BFIE_PATH ) . '/languages' );
+		}
+
+		/**
+		 * This method is allow display default image in post.
+		 *
+		 * @param boolean $has_thumbnail
+		 * @param object $post
+		 * @return boolean $has_thumbnail
+		 */
+		public function has_post_thumbnail( $has_thumbnail, $post ) {
+
+			$post_type = !empty($post->post_type) ? $post->post_type : '';
+			$get_pt_settings = bfi_get_settings('post_types');
+			
+			$bfi_upload_file = !empty( $get_pt_settings[$post_type]['bfi_upload_file']) ? $get_pt_settings[$post_type]['bfi_upload_file'] : 0;
+
+			if( !empty($post_type) && !empty($bfi_upload_file)) {
+				$has_thumbnail = (bool)$bfi_upload_file;
+			}
+
+			return $has_thumbnail;
+		}
+
+		/**
+		 * This method is use to display default image in post.
+		 *
+		 * @param string $html
+		 * @param int $post_id
+		 * @return string $html
+		 */
+		public function post_thumbnail_html( $html, $post_id ) {
+
+			global $post;
+
+			$post_type = !empty($post->post_type) ? $post->post_type : '';
+			$get_pt_settings = bfi_get_settings('post_types');
+
+			if( empty($html) && !empty($post_type) && !empty($get_pt_settings[$post_type]['bfi_upload_file'])) {
+				$post_thumbnail_id = sanitize_text_field( $get_pt_settings[$post_type]['bfi_upload_file'] );
+				$html = wp_get_attachment_image( $post_thumbnail_id, 'post-thumbnail' );
+			}
+
+			return $html;
+		}
+	}
+}

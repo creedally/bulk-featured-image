@@ -1,0 +1,25 @@
+.bfi-submenu-wrap {width: 100%;float: left;}
+.bfi-pagination-wrap {width: 100%;display: block;text-align: right;margin-top: 20px;}
+.bfi-pagination-wrap ul.pagination {list-style: none;padding: 0;margin: 0;}
+.bfi-pagination-wrap ul.pagination li.page-item {display: inline-block;margin: 0;padding: 0;}
+.bfi-pagination-wrap ul.pagination li.page-item a {padding: 10px 15px;text-decoration: none;border: 1px solid #CCC;display: block;margin: 0 3px;color: #1d2327;background: #FFF;}
+.bfi-pagination-wrap ul.pagination li.page-item:hover a, .bfi-pagination-wrap ul.pagination li.page-item.active a {background: #dcdcde;}
+.bfi-image-uploader-wrap .uploader-outer {text-align: center;padding: 20px;}
+.bfi-image-uploader-wrap .uploader-outer strong {padding: 0 10px} 
+.bfi-image-uploader-wrap .dragBox {width: 100%;height: 100%;margin: 0 auto;position: relative;text-align: center;font-weight: normal;line-height: 20px;color: #999;border: 2px dashed #ccc;display: inline-block;transition: transform 0.3s;padding: 30px;}
+.bfi-image-uploader-wrap .dragBox input[type="file"] {position: absolute;height: 100%;width: 100%;opacity: 0;top: 0;left: 0;}
+.bfi-image-uploader-wrap .draging {transform: scale(1.1);}
+.bfi-image-uploader-wrap .uploader-preview {text-align: left;padding: 20px;}
+.bfi-image-uploader-wrap .uploader-preview img {max-width: 100%;border: 2px dashed #CCC;width: 300px;height: 200px;background: #f6f7f7;}
+.bfi-image-uploader-wrap .uploader-outer .description {text-align: left;margin-top: 10px;font-size: 14px;font-style: italic;color: #646970;}
+.featured-image .uploader-preview img {width: 250px;height: 135px;}
+.bfi-image-uploader-wrap .uploader-preview:empty {padding: 0 !important;}
+#bfie_form_main table.wp-list-table th#id, #bfie_form_main table.wp-list-table td.id {width: 5%; text-align: center;}
+#bfie_form_main table.wp-list-table th#title {width: 30%;}
+#bfie_form_main table.wp-list-table th#featured-image {width: 20%;}
+#bfie_form_main table.wp-list-table th#new-featured-mage {width: 20%;}
+#bfie_form_main table.wp-list-table th#author {width: 10%;}
+#bfie_form_main table.wp-list-table th#date {width: 10%;}
+#bfie_form_main table.wp-list-table th span,#bfie_form_main table.wp-list-table td a{color: #2271b1;text-decoration: none;}
+#bfie_form_main table.wp-list-table td a{font-size: 14px!important;}
+#bfie_form_main table.wp-list-table td a.title{font-weight: 600;}
