@@ -19,6 +19,12 @@ if( !class_exists('BFIE_Admin_Fields')) {
             add_action( 'bfie_save_section_post_types', array( $this, 'save_post_types' ) );
             add_action( 'bfie_sub_section_before_content', array($this,'add_default_post_type_thumb'));
             add_action( 'bfie_section_content_uninstall', array( $this, 'uninstall_settings') );
+	        add_action( 'wp_ajax_remove_featured_image', array( $this, 'remove_featured_image') );
+
+	        add_filter( 'manage_posts_columns',array( $this, 'set_custom_edit_book_columns') );
+	        add_action( 'manage_posts_custom_column' , array( $this, 'custom_featured_image_column' ),10,2);
+	        add_action( 'wp_ajax_add_featured_image' , array( $this, 'add_featured_image' ));
+
         }
 
         public function general_settings() {
@@ -305,6 +311,100 @@ if( !class_exists('BFIE_Admin_Fields')) {
             <?php
         }
 
+		public function remove_featured_image() {
+
+			$status = false;
+            $message = '';
+			$html = '';
+			$post_id = ! empty( $_POST['data_id'] ) ? sanitize_text_field( $_POST['data_id'] ) : '';
+			$current_page = ! empty( $_POST['current_page'] ) ? sanitize_text_field( $_POST['current_page'] ) : '';
+            if( !empty( $post_id ) && $post_id > 0 ) {
+	            $delete_status =  delete_post_thumbnail($post_id);
+	            if( true == $delete_status ){
+		            $status = true;
+		            $BFI_List_Table = new BFI_List_Table();
+                    if( !empty( $current_page ) && 'bulk-featured-image' === $current_page ) {
+	                    $html = $BFI_List_Table->get_thumbnail_html( $post_id );
+                    } else {
+	                    $html = $this->get_post_featured_html( $post_id );
+                    }
+		            $message = __('Thumbnail delete successfully!!!');
+	            }
+            }
+            $response = array(
+                    'status' => $status,
+                    'message' => $message,
+                    'html' => $html,
+            );
+			wp_send_json( $response );
+		}
+
+		public function set_custom_edit_book_columns($columns) {
+
+			$columns['featured_image'] = __( 'Featured Image', 'bulk-featured-image' );
+
+			return $columns;
+		}
+
+        public function get_post_featured_html( $post_id ) {
+
+            ob_start();
+	        $BFI_List_Table = new BFI_List_Table();?>
+	        <div class='post-bfi'>
+                <?php
+	            echo $BFI_List_Table->get_thumbnail_html($post_id);
+                ?>
+	        </div>
+	        <?php
+	        if(has_post_thumbnail($post_id)){
+	        ?>
+		        <div class="post-bfi-option">
+		        <a class="bfi-img-uploader" data-id="<?php echo $post_id;?>">Update Featured Image</a>
+		        </div>
+		        <?php
+	        }else{
+	        ?>
+		        <div class="post-bfi-option">
+		        <a class="bfi-img-uploader" data-id="<?php echo $post_id;?>">Add Featured Image</a>
+		        </div>
+		        <?php
+	        }
+	        $featured_html = ob_get_contents();
+            ob_get_clean();
+
+            return $featured_html;
+        }
+
+		public function  custom_featured_image_column( $column, $post_id ) {
+			switch ( $column ) {
+
+				case 'featured_image' :
+                    echo $this->get_post_featured_html($post_id);
+					break;
+                default : ;
+			}
+		}
+		public function add_featured_image() {
+
+			$status = false;
+			$message = '';
+			$html = '';
+			$post_id = ! empty( $_POST['data_id'] ) ? sanitize_text_field( $_POST['data_id'] ) : '';
+			$attach_id_array = ! empty( $_POST['attach_id'] ) ?  $_POST['attach_id'] : array();
+			$attach_id = $attach_id_array['id'];
+			$thumbnail_status = set_post_thumbnail($post_id, (int)$attach_id);
+            if(! empty($thumbnail_status)){
+	            $status = true;
+	            $html = $this->get_post_featured_html($post_id);
+            }
+			$response = array(
+				'status' => $status,
+				'message' => $message,
+				'html' => $html,
+			);
+			wp_send_json( $response );
+
+		}
     }
 
     new BFIE_Admin_Fields();
