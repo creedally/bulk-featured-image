@@ -9,7 +9,58 @@ jQuery(document).ready(function($) {
         });
         
     }).change();
+
+    $(document).on('click','.remove-featured-image',function(event) {
+        var data_id = $(this).attr('data-id'),
+            current_page = $(this).attr('data-current_page');
+        var data = {
+            'action': 'remove_featured_image',
+            'data_id': data_id,
+            'current_page': current_page,
+        };
+        if( confirm( bfie_object.delete_post_message ) ){
+            jQuery.post(bfie_object.ajax_url, data, function(response) {
+
+                if( response.status ) {
+                    $('.bfi-row-'+data_id+' .featured-image').html('').html(response.html);
+                    $('.post-'+data_id+' .featured_image').html('').html(response.html);
+                }
+            });
+        }
+    });
+
+    $(document).on( 'click', '.bfi-img-uploader', function(e){
+        e.preventDefault();
+        let dataId = $(this).attr('data-id');
+
+        var button = $(this),
+            custom_uploader = wp.media({
+                title: 'Insert image',
+                library : {
+                    // uploadedTo : wp.media.view.settings.post.id, // attach to the current post?
+                    type : 'image'
+                },
+                button: {
+                    text: 'Use this image' // button label text
+                },
+                multiple: false
+            }).on('select', function() { // it also has "open" and "close" events
+                var attachment = custom_uploader.state().get('selection').first().toJSON();
+                var data = {
+                    'action': 'add_featured_image',
+                    'attach_id': attachment,
+                    'data_id': dataId,
+                };jQuery.post(bfie_object.ajax_url, data, function(response) {
+                    if( response.status ) {
+                        $('.post-'+dataId+' .featured_image').html('').html(response.html);
+
+                    }
+                });
+            }).open();
+    });
 });
+
+
 
 function bfi_drag_drop(event, id ='' ) {
     
