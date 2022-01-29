@@ -1,10 +1,10 @@
 ﻿=== Bulk Featured Image ===
-Contributors: creedally, dhavalparejia
+Contributors: creedally, dhavalparejia, lovesoni1999
 Tags: thumbnails, post-thumbnail
 Requires at least: 4.7
-Tested up to: 5.8.3
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -70,6 +70,12 @@ In the search field type Bulk Featured Image and click Search Plugins. Once you'
 6. Banner for display featured image in public.
 
 == Changelog ==
+
+= 1.1.0 - 01/29/2022 =
+
+* Feature - Allow to add/update featured image from posts listing page.
+* Feature - Allow to remove featured image from posts listing.
+
 
 = 1.0.0 - 04/24/2021 =
 
