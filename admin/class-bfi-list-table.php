@@ -197,17 +197,21 @@ class BFI_List_Table extends WP_List_Table {
 
         $current_page = !empty( $_GET['page']) ? esc_attr($_GET['page']) : get_post_type($post_id);
 
-        ?><div class="bfi-image-uploader-wrap"><?php
-            if( !empty($thumb)) { ?>
+        ?>
+        <div class="bfi-image-uploader-wrap">
+            <?php if( !empty($thumb)) { ?>
                 <div class="uploader-preview">
-                    <span id="remove-featured-image" class="close-btn remove-featured-image" data-current_page="<?php echo $current_page; ?>" data-id="<?php echo $post_id; ?>"></span>
                     <img id="post_thumbnail_url_<?php echo $post_id; ?>" src="<?php echo esc_url($thumb); ?>" alt="<?php echo get_the_title(); ?>" width="50" height="50" />
                 </div>
             <?php } else { ?>
                 <div id="no_thumbnail_url_<?php echo $post_id; ?>"><?php _e( 'Thumbnail not exists', 'bulk-featured-image' ); ?></div>
             <?php } ?>
-            <div class="uploader-preview" id="bfi_upload_preview_<?php echo $post_id; ?>"></div>
         </div>
+	    <?php if( !empty($thumb)) { ?>
+        <div class="bfi-remove-image">
+            <a id="remove-featured-image" class="remove-featured-image" data-current_page="<?php echo $current_page; ?>" data-id="<?php echo $post_id; ?>">Remove image</a>
+        </div>
+        <?php } ?>
         <?php 
         $html = ob_get_contents();
         ob_get_clean();
