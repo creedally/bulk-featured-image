@@ -130,15 +130,6 @@ if ( ! class_exists( 'BFIE' ) ) {
 
 			wp_enqueue_script( 'select2-script', BFIE_PLUGIN_URL . 'assets/js/select2.min.js', array( 'jquery', ), '', true );
 			wp_enqueue_script( 'bulk-featured-image', BFIE_PLUGIN_URL . 'assets/js/bulk-featured-image-admin.js', array( 'jquery', ), '', true );
-			wp_enqueue_media();
-			wp_localize_script(
-				'bulk-featured-image',
-				'bfie_object',
-				array(
-					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'delete_post_message' => __('Are You sure you want to Remove this Image!','bulk-featured-image' ),
-				)
-			);
 		}
 
 		/**

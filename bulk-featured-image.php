@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Bulk Featured Image
-Plugin URI: https://wordpress.org/plugins/bulk-featured-image/
+Plugin URI: https://wordpress.org/
 Description: Bulk Featured images update.
 Version: 1.0.0
 Author: CreedAlly
