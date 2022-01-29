@@ -206,6 +206,7 @@ class BFI_List_Table extends WP_List_Table {
             <?php } else { ?>
                 <div id="no_thumbnail_url_<?php echo $post_id; ?>"><?php _e( 'Thumbnail not exists', 'bulk-featured-image' ); ?></div>
             <?php } ?>
+            <div class="uploader-preview" id="bfi_upload_preview_<?php echo $post_id; ?>"></div>
         </div>
 	    <?php if( !empty($thumb)) { ?>
         <div class="bfi-remove-image">
