@@ -1,4 +1,4 @@
-﻿=== Bulk Featured Image ===
+=== Bulk Featured Image ===
 Contributors: creedally, dhavalparejia, lovesoni1999
 Tags: thumbnails, post-thumbnail
 Requires at least: 4.7
@@ -62,12 +62,13 @@ In the search field type Bulk Featured Image and click Search Plugins. Once you'
 2. Activate the plugin in your WordPress admin area.
 
 == Screenshots ==
-1. Banner for general settings page.
-2. Banner for Post type settings page.
-3. Banner for how tp upload featured image.
-4. Banner for display notification message.
-5. Banner for after update featured image display in edit page.
-6. Banner for display featured image in public.
+1. Plugin settings page.
+2. Post type settings page.
+3. Display Upload/Remove featured image.
+4. Display notification message.
+5. Featured image display in detail page.
+6. Display featured image in public side.
+7. Add/update Posts featured image.
 
 == Changelog ==
 
