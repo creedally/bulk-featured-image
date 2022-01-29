@@ -75,7 +75,7 @@ In the search field type Bulk Featured Image and click Search Plugins. Once you'
 = 1.1.0 - 01/29/2022 =
 
 * Feature - Allow to add/update featured image from posts listing page.
-* Feature - Allow to remove featured image from posts listing.
+* Feature - Allow to remove featured image from posts listing and setting interface.
 
 
 = 1.0.0 - 04/24/2021 =
