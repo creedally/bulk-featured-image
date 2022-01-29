@@ -136,7 +136,7 @@ if ( ! class_exists( 'BFIE' ) ) {
 				'bfie_object',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'delete_post_message' => __('Are You sure you want to delete this image!','bulk-featured-image' ),
+					'delete_post_message' => __('Are You sure you want to Remove this Image!','bulk-featured-image' ),
 				)
 			);
 		}
