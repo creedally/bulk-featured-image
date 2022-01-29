@@ -4,7 +4,7 @@
 .bfi-pagination-wrap ul.pagination li.page-item {display: inline-block;margin: 0;padding: 0;}
 .bfi-pagination-wrap ul.pagination li.page-item a {padding: 10px 15px;text-decoration: none;border: 1px solid #CCC;display: block;margin: 0 3px;color: #1d2327;background: #FFF;}
 .bfi-pagination-wrap ul.pagination li.page-item:hover a, .bfi-pagination-wrap ul.pagination li.page-item.active a {background: #dcdcde;}
-.bfi-image-uploader-wrap .uploader-outer {text-align: center;padding: 20px;}
+.bfi-image-uploader-wrap .uploader-outer {text-align: center;}
 .bfi-image-uploader-wrap .uploader-outer strong {padding: 0 10px}
 .bfi-image-uploader-wrap .dragBox {width: 100%;height: 100%;margin: 0 auto;position: relative;text-align: center;font-weight: normal;line-height: 20px;color: #999;border: 2px dashed #ccc;display: inline-block;transition: transform 0.3s;padding: 30px;}
 .bfi-image-uploader-wrap .dragBox input[type="file"] {position: absolute;height: 100%;width: 100%;opacity: 0;top: 0;left: 0;}
