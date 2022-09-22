@@ -16,22 +16,35 @@ Domain Path: /languages
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define plugin version.
-define( 'BFIE_VERSION', '1.1.1' );
+if ( ! defined( 'BFIE_VERSION' ) ) {
+	define( 'BFIE_VERSION', '1.1.1' );
+}
 
 // Define plugin dir path.
-define( 'BFIE_PATH', plugin_dir_path( __FILE__ ) );
+if ( ! defined( 'BFIE_PATH' ) ) {
+	define( 'BFIE_PATH', plugin_dir_path( __FILE__ ) );
+}
 
 // Define plugin dir url.
-define( 'BFIE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+if ( ! defined( 'BFIE_PLUGIN_URL' ) ) {
+	define( 'BFIE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
 
 // Define default per page.
-define( 'BFIE_PER_PAGE', 20 );
+if ( ! defined( 'BFIE_PER_PAGE' ) ) {
+	define( 'BFIE_PER_PAGE', 20 );
+}
 
 // Define plugin menu slug.
-define('BFIE_MENU_SLUG', 'bulk-featured-image');
+if ( ! defined( 'BFIE_MENU_SLUG' ) ) {
+	define('BFIE_MENU_SLUG', 'bulk-featured-image');
+}
 
 // Define plugin basename.
-define('BFIE_PLUGIN_BASENAME', plugin_basename( __FILE__ ));
+if ( ! defined( 'BFIE_PLUGIN_BASENAME' ) ) {
+	define('BFIE_PLUGIN_BASENAME', plugin_basename( __FILE__ ));
+}
+
 
 /**
  * The core plugin class that is used to define internationalization,
