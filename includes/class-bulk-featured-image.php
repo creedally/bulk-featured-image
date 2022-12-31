@@ -193,9 +193,9 @@ if ( ! class_exists( 'BFIE' ) ) {
 
 			$post_type = !empty($post->post_type) ? $post->post_type : '';
 			$get_pt_settings = bfi_get_settings('post_types');
-			$get_defoult_enable = !empty( bfi_get_settings('general')['enable_default_image'] ) ? bfi_get_settings('general')['enable_default_image'] : [];
+			$get_default_enable = !empty( bfi_get_settings('general')['enable_default_image'] ) ? bfi_get_settings('general')['enable_default_image'] : [];
 
-			if( empty($html) && !empty($post_type) && !empty($get_pt_settings[$post_type]['bfi_upload_file']) && in_array($post_type, $get_defoult_enable) ) {
+			if( empty($html) && !empty($post_type) && !empty($get_pt_settings[$post_type]['bfi_upload_file']) && in_array($post_type, $get_default_enable) ) {
 				$post_thumbnail_id = sanitize_text_field( $get_pt_settings[$post_type]['bfi_upload_file'] );
 				$html = wp_get_attachment_image( $post_thumbnail_id, 'post-thumbnail' );
 			}
