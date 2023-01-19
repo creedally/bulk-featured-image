@@ -26,6 +26,8 @@ Easily update or set featured image on the post, page and product.
 * Global settings for allow default featured image.
 * Allows post, page and product to set featured image. If you want to allow more Post Type then use filter.
 * Set featured image in Bulk.
+* Add/update featured image from posts listing page.
+* Remove featured image from posts listing and plugin setting area .
 
 = Links =
 
@@ -45,6 +47,7 @@ Avoid the time-consuming lengthy task of setting up featured images and use our 
 * Settings for per page limit.
 * Settings for Allow post types.
 * Custom settings page for managing plugin.
+* Upload featured image using url from posts listing and plugin setting area.
 
 [Upgrade to Pro](https://store.creedally.com/product/bulk-featured-image-pro/)
 
