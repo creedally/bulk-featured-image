@@ -2,9 +2,9 @@
 Contributors: creedally, dhavalparejia, lovesoni1999
 Tags: thumbnails, post-thumbnail
 Requires at least: 4.7
-Tested up to: 6.1.1
+Tested up to: 6.2
 Requires PHP: 5.6
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -48,6 +48,8 @@ Avoid the time-consuming lengthy task of setting up featured images and use our 
 * Settings for Allow post types.
 * Custom settings page for managing plugin.
 * Upload featured image using url from posts listing and plugin setting area.
+* Import multiple product gallery image using CSV file
+* Import multiple product gallery image using listing interface.
 
 [Upgrade to Pro](https://store.creedally.com/product/bulk-featured-image-pro/)
 
@@ -74,6 +76,9 @@ In the search field type Bulk Featured Image and click Search Plugins. Once you'
 7. Add/update Posts featured image.
 
 == Changelog ==
+
+= 1.1.3 - 04/17/2023 =
+* Compatibility with WordPress 6.2 version.
 
 = 1.1.2 - 01/19/2023 =
 
