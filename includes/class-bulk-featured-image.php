@@ -168,6 +168,10 @@ if ( ! class_exists( 'BFIE' ) ) {
 		 */
 		public function has_post_thumbnail( $has_thumbnail, $post ) {
 
+            if( empty( $post ) ) {
+                global $post;
+            }
+
 			$post_type = !empty($post->post_type) ? $post->post_type : '';
 			$get_pt_settings = bfi_get_settings('post_types');
 			
