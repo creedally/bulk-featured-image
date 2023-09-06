@@ -77,7 +77,7 @@ In the search field type Bulk Featured Image and click Search Plugins. Once you'
 
 == Changelog ==
 
-= 1.1.4 - 09/5/2023 =
+= 1.1.4 - 09/06/2023 =
 
 * Compatibility with WordPress 6.3.1 version.
 
