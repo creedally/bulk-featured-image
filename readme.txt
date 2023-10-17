@@ -50,6 +50,7 @@ Avoid the time-consuming lengthy task of setting up featured images and use our 
 * Upload featured image using url from posts listing and plugin setting area.
 * Import multiple product gallery image using CSV file
 * Import multiple product gallery image using listing interface.
+* Upload post content image after paragraph using CSV with add "|" separator and support only Classic Editor, Gutenberg, Elemantor and Divi Builder
 
 [Upgrade to Pro](https://store.creedally.com/product/bulk-featured-image-pro/)
 
