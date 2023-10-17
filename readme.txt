@@ -1,5 +1,5 @@
 === Bulk Featured Image ===
-Contributors: creedally, dhavalparejia, lovesoni1999
+Contributors: creedally, dhavalparejia, priyank9033
 Tags: thumbnails, post-thumbnail
 Requires at least: 4.7
 Tested up to: 6.3.1
