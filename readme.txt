@@ -2,9 +2,9 @@
 Contributors: creedally, dhavalparejia, priyank9033
 Tags: thumbnails, post-thumbnail
 Requires at least: 4.7
-Tested up to: 6.3.1
+Tested up to: 6.4.1
 Requires PHP: 5.6
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -77,6 +77,10 @@ In the search field type Bulk Featured Image and click Search Plugins. Once you'
 7. Add/update Posts featured image.
 
 == Changelog ==
+
+= 1.1.5 - 11/17/2023 =
+
+* Compatibility with WordPress 6.4.1 version.
 
 = 1.1.4 - 09/06/2023 =
 
