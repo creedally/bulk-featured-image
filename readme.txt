@@ -2,9 +2,9 @@
 Contributors: creedally, dhavalparejia, priyank9033
 Tags: thumbnails, post-thumbnail
 Requires at least: 4.7
-Tested up to: 6.4.1
+Tested up to: 6.4.2
 Requires PHP: 5.6
-Stable tag: 1.1.5
+Stable tag: 1.1.6
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -51,6 +51,11 @@ Avoid the time-consuming lengthy task of setting up featured images and use our 
 * Import multiple product gallery image using CSV file
 * Import multiple product gallery image using listing interface.
 * Upload post content image after paragraph using CSV with add "|" separator and support only Classic Editor, Gutenberg, Elemantor and Divi Builder
+* Allow to remove multiple featured image for post, page, product and custom post types using listings interface.
+* Allow to remove multiple product gallery image using listing interface.
+* Allow to remove featured images using csv file for all post types.
+* Allow to remove product gallery images using csv file.
+* Added option to remove default featured image in post, page, product and custom post types.
 
 [Upgrade to Pro](https://store.creedally.com/product/bulk-featured-image-pro/)
 
@@ -77,6 +82,10 @@ In the search field type Bulk Featured Image and click Search Plugins. Once you'
 7. Add/update Posts featured image.
 
 == Changelog ==
+
+= 1.1.6 - 01/03/2024 =
+
+* Compatibility with WordPress 6.4.2 version.
 
 = 1.1.5 - 11/17/2023 =
 
