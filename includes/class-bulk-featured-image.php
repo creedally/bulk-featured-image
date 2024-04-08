@@ -82,6 +82,7 @@ if ( ! class_exists( 'BFIE' ) ) {
 			add_action( 'init', array( $this, 'load_textdomain' ) );
 			add_action('has_post_thumbnail', array( $this, 'has_post_thumbnail'), 10, 2 );
 			add_action('post_thumbnail_html', array( $this, 'post_thumbnail_html'), 10, 2 );
+			add_filter('woocommerce_placeholder_img_src', array( $this, 'product_thumbnail_html' ), 10, 1);
 		}
 
 		/**
@@ -205,6 +206,37 @@ if ( ! class_exists( 'BFIE' ) ) {
 			}
 
 			return $html;
+		}
+
+		/**
+		 * This method is used to modify the placeholder image source for WooCommerce products.
+		 *
+		 * @param string $attachment_src Default placeholder image source.
+		 * @return string $attachment_src Modified placeholder image source.
+		 */
+		public function product_thumbnail_html( $attachment_src ) {
+			global $post;
+
+			$post_type = get_post_type($post);
+
+			// Check if the current post type is a product
+			if( $post_type === 'product' ) {
+				$get_pt_settings = bfi_get_settings('post_types');
+				$get_default_enable = !empty( bfi_get_settings('general')['enable_default_image'] ) ? bfi_get_settings('general')['enable_default_image'] : [];
+
+				// Check if default image is enabled for products
+				if( !empty($get_pt_settings[$post_type]['bfi_upload_file']) && in_array($post_type, $get_default_enable) ) {
+					$product_thumbnail_id = sanitize_text_field( $get_pt_settings[$post_type]['bfi_upload_file'] );
+					$default_src = wp_get_attachment_image_url( $product_thumbnail_id, 'woocommerce_thumbnail' );
+
+					// Use the custom image URL as the placeholder image source
+					if ( $default_src ) {
+						$attachment_src = $default_src;
+					}
+				}
+			}
+
+			return $attachment_src;
 		}
 	}
 }
