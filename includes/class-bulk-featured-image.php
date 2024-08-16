@@ -82,6 +82,8 @@ if ( ! class_exists( 'BFIE' ) ) {
 			add_action( 'init', array( $this, 'load_textdomain' ) );
 			add_action('has_post_thumbnail', array( $this, 'has_post_thumbnail'), 10, 2 );
 			add_action('post_thumbnail_html', array( $this, 'post_thumbnail_html'), 10, 2 );
+			add_filter('woocommerce_placeholder_img_src', array( $this, 'product_thumbnail_html' ), 10, 1);
+			add_filter('post_thumbnail_id', array( $this, 'bfi_get_post_thumbnail_id' ),10, 1);
 		}
 
 		/**
@@ -168,11 +170,11 @@ if ( ! class_exists( 'BFIE' ) ) {
 		 */
 		public function has_post_thumbnail( $has_thumbnail, $post ) {
 
-            if( empty( $post ) ) {
+			if( empty( $post ) ) {
                 global $post;
-            }
+			}
 
-			$post_type = !empty($post->post_type) ? $post->post_type : '';
+			$post_type = get_post_type( $post );
 			$get_pt_settings = bfi_get_settings('post_types');
 			
 			$bfi_upload_file = !empty( $get_pt_settings[$post_type]['bfi_upload_file']) ? $get_pt_settings[$post_type]['bfi_upload_file'] : 0;
@@ -206,5 +208,71 @@ if ( ! class_exists( 'BFIE' ) ) {
 
 			return $html;
 		}
+
+		/**
+		 * This method is used to modify the placeholder image source for WooCommerce products.
+		 *
+		 * @param string $attachment_src Default placeholder image source.
+		 * @return string $attachment_src Modified placeholder image source.
+		 */
+		public function product_thumbnail_html( $attachment_src ) {
+			global $post;
+
+			$post_type = get_post_type($post);
+
+			// Check if the current post type is a product
+			if( $post_type === 'product' ) {
+				$get_pt_settings = bfi_get_settings('post_types');
+				$get_default_enable = !empty( bfi_get_settings('general')['enable_default_image'] ) ? bfi_get_settings('general')['enable_default_image'] : [];
+
+				// Check if default image is enabled for products
+				if( !empty($get_pt_settings[$post_type]['bfi_upload_file']) && in_array($post_type, $get_default_enable) ) {
+					$product_thumbnail_id = sanitize_text_field( $get_pt_settings[$post_type]['bfi_upload_file'] );
+					$default_src = wp_get_attachment_image_url( $product_thumbnail_id, 'woocommerce_thumbnail' );
+
+					// Use the custom image URL as the placeholder image source
+					if ( $default_src ) {
+						$attachment_src = $default_src;
+					}
+				}
+			}
+
+			return $attachment_src;
+		}
+
+		/**
+		 * Filters and retrieves the post thumbnail ID.
+		 *
+		 * This method is used to check if a post has a thumbnail. If no thumbnail is set and the
+		 * post type has a default image specified in the settings, it returns the default image ID.
+		 * If a thumbnail is set or no default image is configured, it returns the current thumbnail ID.
+		 *
+		 * @param int|null $thumbnail_id The current post thumbnail ID. If no thumbnail is set, this will be null.
+		 * 
+		 * @return int|null The post thumbnail ID. Returns the default image ID if no thumbnail is set and
+		 *                  a default image is configured for the post type. Otherwise, returns the
+		 *                  original thumbnail ID or null if none is set.
+		 */
+		public function bfi_get_post_thumbnail_id($thumbnail_id) {
+			global $post;
+		
+			if (empty($post) || !is_a($post, 'WP_Post')) {
+				return $thumbnail_id;
+			}
+
+			$post_type = get_post_type($post);
+		
+			$get_pt_settings = bfi_get_settings('post_types');
+		
+			$get_default_enable = !empty(bfi_get_settings('general')['enable_default_image']) ? bfi_get_settings('general')['enable_default_image'] : [];
+		
+			if (empty($thumbnail_id) && !empty($post_type) && !empty($get_pt_settings[$post_type]['bfi_upload_file']) && in_array($post_type, $get_default_enable)) {
+				$post_thumbnail_id = absint($get_pt_settings[$post_type]['bfi_upload_file']);
+				return $post_thumbnail_id;
+			}
+
+			return $thumbnail_id;
+		}
+		
 	}
 }
