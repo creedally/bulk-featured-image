@@ -2,9 +2,9 @@
 Contributors: creedally, dhavalparejia, priyank9033
 Tags: thumbnails, post-thumbnail
 Requires at least: 4.7
-Tested up to: 6.4.2
+Tested up to: 6.6.2
 Requires PHP: 5.6
-Stable tag: 1.1.6
+Stable tag: 1.2.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -82,6 +82,12 @@ In the search field type Bulk Featured Image and click Search Plugins. Once you'
 7. Add/update Posts featured image.
 
 == Changelog ==
+
+= 1.2.0 - 10/08/2024 =
+
+* Compatibility with WordPress 6.6.2 version.
+* Fix - Set a default product image for WooCommerce products if not set product image.
+* Fix - Set a default featured image for all post types and compatible with all themes and page builder plugins.
 
 = 1.1.6 - 01/03/2024 =
 
