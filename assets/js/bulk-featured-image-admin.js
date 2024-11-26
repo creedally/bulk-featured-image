@@ -41,9 +41,9 @@ jQuery( document ).ready(
 								$( '.bfi-row-' + data_id + ' .featured-image' ).html( '' ).html( response.html );
 								$( '.post-' + data_id + ' .featured_image' ).html( '' ).html( response.html );
 								bfi_remove_loader( currentobj );
-							}else{
+							} else {
 								bfi_remove_loader( currentobj );
-								alert('You cannot remove the default image. Please GET the PRO Version to use this feature.');
+								alert('The default image cannot be removed. Please upgrade to the PRO version to access this feature.');
 							}
 						}
 					);
