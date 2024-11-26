@@ -3,7 +3,7 @@
 Plugin Name: Bulk Featured Image
 Plugin URI: https://wordpress.org/plugins/bulk-featured-image/
 Description: Bulk Featured images update.
-Version: 1.2.0
+Version: 1.2.1
 Author: CreedAlly
 Author URI: https://creedally.com/
 License: GPL-2.0+
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define plugin version.
 if ( ! defined( 'BFIE_VERSION' ) ) {
-	define( 'BFIE_VERSION', '1.2.0' );
+	define( 'BFIE_VERSION', '1.2.1' );
 }
 
 // Define plugin dir path.
