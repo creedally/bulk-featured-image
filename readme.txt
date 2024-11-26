@@ -83,7 +83,7 @@ In the search field type Bulk Featured Image and click Search Plugins. Once you'
 
 == Changelog ==
 
-= 1.2.1 - 26/11/2024 =
+= 1.2.1 - 11/26/2024 =
 
 * Compatibility with WordPress 6.7.1 version.
 * Fix - Update alert message when user try to remove default featured image.
