@@ -28,8 +28,6 @@ class BFI_List_Table extends WP_List_Table {
 
         $data = $this->table_data();
         
-        usort( $data, array( &$this, 'sort_data' ) );
-
         $table_data = $this->get_post_data();
 
         $totalItems = !empty( $table_data['total_items'] ) ? $table_data['total_items'] : 0;

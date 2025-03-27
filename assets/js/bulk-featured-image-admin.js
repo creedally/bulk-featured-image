@@ -107,22 +107,42 @@ function bfi_remove_loader( id ) {
 	id.children().remove( '.loader' );
 }
 
-function bfi_drag_drop(event, id ='' ) {
+function bfi_drag_drop(event, id='') {
 
 	var preview_id = 'bfi_upload_preview';
-	if ( parseInt( id ) > 0 ) {
-		preview_id += '_' + id;
-		jQuery( '#post_thumbnail_url_' + id ).parent().remove();
-		jQuery( '#no_thumbnail_url_' + id ).remove();
 
+	if (parseInt(id) > 0) {
+		preview_id += '_' + id;
+		jQuery('#post_thumbnail_url_' + id).parent().remove();
+		jQuery('#no_thumbnail_url_' + id).remove();
 	}
 
-	var fileName   = URL.createObjectURL( event.target.files[0] );
-	var preview    = document.getElementById( preview_id );
-	var previewImg = document.createElement( "img" );
-	previewImg.setAttribute( "src", fileName );
+	var preview = document.getElementById(preview_id);
+	var removeImageButton = jQuery('#bfi_upload_preview_' + id).closest('.bfi-image-uploader-wrap').siblings('.bfi-remove-image');
+	var file = event.target.files[0];
 	preview.innerHTML = "";
-	preview.appendChild( previewImg );
+
+	// Allowed file types
+	var allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+
+	if (!allowedTypes.includes(file.type)) {
+		var errorMsg = document.createElement("div");
+        errorMsg.style.color = "red";
+        errorMsg.style.fontWeight = "bold";
+        errorMsg.innerText = "Invalid file type! Only JPG, JPEG, and PNG are allowed.";
+        preview.appendChild(errorMsg);
+
+		removeImageButton.hide();
+		event.target.value = '';
+        return;
+	}
+
+	var fileName = URL.createObjectURL(file);
+    var previewImg = document.createElement("img");
+    previewImg.setAttribute("src", fileName);
+
+    preview.appendChild(previewImg);
+
 }
 
 function bfi_drag( event, id ='') {
@@ -132,6 +152,7 @@ function bfi_drag( event, id ='') {
 	}
 	//document.getElementById(upload_file).parentNode.className = 'draging dragBox';
 }
+
 function bfi_drop( event, id ='') {
 	var upload_file = 'bfi_upload_file';
 	if ( parseInt( id ) > 0 ) {
