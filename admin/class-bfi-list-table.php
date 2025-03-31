@@ -208,7 +208,7 @@ class BFI_List_Table extends WP_List_Table {
         </div>
 	    <?php if( !empty($thumb)) { ?>
         <div class="bfi-remove-image">
-            <a id="remove-featured-image" class="remove-featured-image" data-current_page="<?php echo $current_page; ?>" data-id="<?php echo $post_id; ?>">Remove image</a>
+            <a id="remove-featured-image" class="remove-featured-image" data-current_page="<?php echo $current_page; ?>" data-id="<?php echo $post_id; ?>"><?php esc_html_e( 'Remove image', 'bulk-featured-image' ); ?></a>
         </div>
         <?php } ?>
         <?php 
