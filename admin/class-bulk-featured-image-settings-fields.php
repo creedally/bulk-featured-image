@@ -149,6 +149,7 @@ if( !class_exists('BFIE_Admin_Fields')) {
             $setting_key = 'bfi_settings';
             $bfi_settings = get_option( $setting_key, true );
 
+            $message_updated = false;
             if( isset( $_FILES['bfi_upload_file'] ) && !empty( $_FILES['bfi_upload_file'] ) && is_array($_FILES['bfi_upload_file'])) {
                 $image_url = !empty( $_FILES['bfi_upload_file']['tmp_name'] ) ? sanitize_text_field( $_FILES['bfi_upload_file']['tmp_name'] ) : '';
 				$image_name = !empty( $_FILES['bfi_upload_file']['name'] ) ? sanitize_text_field( $_FILES['bfi_upload_file']['name'] ) : '';
@@ -159,6 +160,7 @@ if( !class_exists('BFIE_Admin_Fields')) {
                     
                     if( !empty($attach_id) && $attach_id > 0 ) {
                         $settings['bfi_upload_file'] = (int)sanitize_text_field($attach_id);
+                        $message_updated = true;
                     }
                 }
             }
@@ -208,8 +210,11 @@ if( !class_exists('BFIE_Admin_Fields')) {
 
             update_option( $setting_key, $bfi_settings );
 
-            self::add_message( sprintf(__( 'Your <strong>%s</strong> featured image updated successfully.', 'bulk-featured-image' ), ucwords($current_sub_section) ) );
+            if( $message_updated ) {
+                self::add_message( sprintf(__( 'Your <strong>%s</strong> featured image updated successfully.', 'bulk-featured-image' ), ucwords($current_sub_section) ) );
+            }
         }
+
 
         public function add_default_post_type_thumb( $section ) {
 
