@@ -43,7 +43,7 @@ jQuery( document ).ready(
 								bfi_remove_loader( currentobj );
 							} else {
 								bfi_remove_loader( currentobj );
-								alert('The default image cannot be removed. Please upgrade to the PRO version to access this feature.');
+								alert(bfie_object.removeDefaultMsg);
 							}
 						}
 					);
@@ -129,7 +129,7 @@ function bfi_drag_drop(event, id='') {
 		var errorMsg = document.createElement("div");
         errorMsg.style.color = "red";
         errorMsg.style.fontWeight = "bold";
-        errorMsg.innerText = "Invalid file type! Only JPG, JPEG, and PNG are allowed.";
+        errorMsg.innerText = bfie_object.invalidFileType;
         preview.appendChild(errorMsg);
 
 		removeImageButton.hide();
@@ -150,7 +150,7 @@ function bfi_drag( event, id ='') {
 	if ( parseInt( id ) > 0 ) {
 		upload_file += '_' + id;
 	}
-	//document.getElementById(upload_file).parentNode.className = 'draging dragBox';
+
 }
 
 function bfi_drop( event, id ='') {
@@ -158,5 +158,4 @@ function bfi_drop( event, id ='') {
 	if ( parseInt( id ) > 0 ) {
 		upload_file += '_' + id;
 	}
-	//document.getElementById(upload_file).parentNode.className = 'dragBox';
 }

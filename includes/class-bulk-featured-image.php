@@ -139,6 +139,8 @@ if ( ! class_exists( 'BFIE' ) ) {
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'delete_post_message' => __('Are You sure you want to Remove this Image!','bulk-featured-image' ),
+					'invalidFileType' => __('Invalid file type. Only JPG, JPEG, or PNG files are allowed.','bulk-featured-image' ),
+					'removeDefaultMsg' => __('The default image cannot be removed. Please upgrade to the PRO version to access this feature.','bulk-featured-image' ),
 				)
 			);
 		}
