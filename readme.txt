@@ -1,10 +1,10 @@
 === Bulk Featured Image ===
 Contributors: creedally, dhavalparejia, priyank9033
 Tags: thumbnails, post-thumbnail
-Requires at least: 4.7
-Tested up to: 6.7.1
-Requires PHP: 5.6
-Stable tag: 1.2.1
+Requires at least: 5.8
+Tested up to: 6.8.1
+Requires PHP: 7.4
+Stable tag: 1.2.2
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -82,6 +82,10 @@ In the search field type Bulk Featured Image and click Search Plugins. Once you'
 7. Add/update Posts featured image.
 
 == Changelog ==
+
+= 1.2.2 - 06/03/2025 =
+* Fix – Validate file type during image upload.
+* Compatibility with WordPress 6.8.1 version.
 
 = 1.2.1 - 11/26/2024 =
 
