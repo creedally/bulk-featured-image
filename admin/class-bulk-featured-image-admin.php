@@ -67,7 +67,7 @@ if( !class_exists( 'BFIE_Admin' ) ) {
 
 			add_menu_page(
 				__( 'Bulk Featured Image', 'bulk-featured-image' ),
-				__( 'BFIE','bulk-featured-image' ),
+				__( 'BFI','bulk-featured-image' ),
 				'manage_options',
 				$this->menu_slug,
 				array($this,'process_admin_menu'),
@@ -161,6 +161,7 @@ if( !class_exists( 'BFIE_Admin' ) ) {
 					<a href="<?php echo $menu_link; ?>" class="nav-tab <?php echo $active; ?>"><?php echo $menu; ?></a>
 					<?php
 				} ?>	
+				<a href="https://store.creedally.com/product/bulk-featured-image-pro/" target="_blank" rel="nofollow" class="wpar-nav-button product-url"><img src="<?php echo BFIE_PLUGIN_URL . '/assets/images/icon-upgrade-pro.svg'; ?>"><p><?php _e( 'Upgrade to Pro', 'product-auto-release-lite' ); ?></p></a>
 			</nav>
 			<?php
 

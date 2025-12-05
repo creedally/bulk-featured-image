@@ -34,3 +34,5 @@
 .loader {border: 3px solid #2271b1;border-radius: 100%;border-top: 3px solid #1d2327;width: 20px;height: 20px;-webkit-animation: spin 2s linear infinite;animation: spin 2s linear infinite;position: relative;display: inline-block;vertical-align: middle;left: 5px;}
 @-webkit-keyframes spin { 0% { -webkit-transform: rotate(0deg); } 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.product-url{display:inline-flex;background:#dee3ff;border:1px solid #c6d3f8;box-sizing:border-box;border-radius:0.25rem;padding:5px 10px;margin-left:10px;text-decoration:none;text-transform:uppercase;color:#425fdd;font-weight:600}
+.product-url p{margin:0;padding-left:5px}
