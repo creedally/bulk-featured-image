@@ -160,8 +160,8 @@ if( !class_exists( 'BFIE_Admin' ) ) {
 					?>
 					<a href="<?php echo $menu_link; ?>" class="nav-tab <?php echo $active; ?>"><?php echo $menu; ?></a>
 					<?php
-				} ?>	
-				<a href="https://store.creedally.com/product/bulk-featured-image-pro/" target="_blank" rel="nofollow" class="wpar-nav-button product-url"><img src="<?php echo BFIE_PLUGIN_URL . '/assets/images/icon-upgrade-pro.svg'; ?>"><p><?php _e( 'Upgrade to Pro', 'product-auto-release-lite' ); ?></p></a>
+				} ?>
+				<a href="<?php echo esc_url( 'https://store.creedally.com/product/bulk-featured-image-pro/' ); ?>" target="_blank" rel="nofollow" class="wpar-nav-button product-url"><img src="<?php echo esc_url( BFIE_PLUGIN_URL . '/assets/images/icon-upgrade-pro.svg' ); ?>"><p><?php _e( 'Upgrade to Pro', 'product-auto-release-lite' ); ?></p></a>
 			</nav>
 			<?php
 
