@@ -230,7 +230,7 @@ class BFI_List_Table extends WP_List_Table {
             <div class="row">
                 <div class="uploader-outer col-md-10">
                     <div class="dragBox p-3">
-                        <span class="d-block"><?php _e('Darg and Drop image here','bulk-featured-image'); ?>
+                        <span class="d-block"><?php _e('Drag and Drop image here','bulk-featured-image'); ?>
                             <input type="file" onChange="bfi_drag_drop(event,<?php echo $post_id; ?>)" data-id="<?php echo $post_id; ?>" name="bfi_upload_file_<?php echo $post_id; ?>"  ondragover="bfi_drag(event,<?php echo $post_id; ?>)" ondrop="bfi_drop(event,<?php echo $post_id; ?>)" id="bfi_upload_file_<?php echo $post_id; ?>" accept=".png,.jpg,.jpeg"  />
                             <input type="hidden" name="bfi_upload_post_id[]" value="<?php echo $post_id; ?>" />
                         </span>
