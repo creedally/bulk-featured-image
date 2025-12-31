@@ -237,7 +237,7 @@ if( !class_exists('BFIE_Admin_Fields')) {
                     <div class="row">
                         <div class="uploader-outer col-md-4">
                             <div class="dragBox">
-                                <span class="d-block"><?php _e('Darg and Drop image here','bulk-featured-image'); ?>
+                                <span class="d-block"><?php _e('Drag and Drop image here','bulk-featured-image'); ?>
                                     <input type="file" onChange="bfi_drag_drop(event)" name="bfi_upload_file"  ondragover="bfi_drag()" ondrop="bfi_drop()" id="bfi_upload_file" accept=".png,.jpg,.jpeg"  />
                                 </span>
                                 <strong class="d-block my-2"><?php _e('OR','bulk-featured-image'); ?></strong>
