@@ -210,11 +210,34 @@ if( !class_exists('BFIE_Admin_Fields')) {
 
             update_option( $setting_key, $bfi_settings );
 
+            if ( ! empty( $settings['bfi_upload_file'] ) && ! empty( $current_sub_section ) ) {
+
+                $default_image_id = (int) $settings['bfi_upload_file'];
+
+                $args = array(
+                    'post_type'      => $current_sub_section,
+                    'posts_per_page' => -1,
+                    'post_status'    => 'any',
+                    'meta_query'     => array(
+                        array(
+                            'key'     => '_thumbnail_id',
+                            'compare' => 'NOT EXISTS',
+                        ),
+                    ),
+                );
+
+                $posts = get_posts( $args );
+
+                if ( ! empty( $posts ) ) {
+                    foreach ( $posts as $post ) {
+                        set_post_thumbnail( $post->ID, $default_image_id );
+                    }
+                }
+            }
             if( $message_updated ) {
                 self::add_message( sprintf(__( 'Your <strong>%s</strong> featured image updated successfully.', 'bulk-featured-image' ), ucwords($current_sub_section) ) );
             }
         }
-
 
         public function add_default_post_type_thumb( $section ) {
 
