@@ -25,6 +25,7 @@ if( !class_exists('BFIE_Admin_Fields')) {
 	        add_action( 'manage_posts_custom_column' , array( $this, 'custom_featured_image_column' ),10,2);
 	        add_action( 'wp_ajax_add_featured_image' , array( $this, 'add_featured_image' ));
 
+            add_filter( 'woocommerce_product_get_image_id', array( $this, 'bfie_set_global_product_image' ), 10, 2 );
         }
 
         public function general_settings() {
@@ -209,31 +210,7 @@ if( !class_exists('BFIE_Admin_Fields')) {
             }
 
             update_option( $setting_key, $bfi_settings );
-
-            if ( ! empty( $settings['bfi_upload_file'] ) && ! empty( $current_sub_section ) ) {
-
-                $default_image_id = (int) $settings['bfi_upload_file'];
-
-                $args = array(
-                    'post_type'      => $current_sub_section,
-                    'posts_per_page' => -1,
-                    'post_status'    => 'any',
-                    'meta_query'     => array(
-                        array(
-                            'key'     => '_thumbnail_id',
-                            'compare' => 'NOT EXISTS',
-                        ),
-                    ),
-                );
-
-                $posts = get_posts( $args );
-
-                if ( ! empty( $posts ) ) {
-                    foreach ( $posts as $post ) {
-                        set_post_thumbnail( $post->ID, $default_image_id );
-                    }
-                }
-            }
+            
             if( $message_updated ) {
                 self::add_message( sprintf(__( 'Your <strong>%s</strong> featured image updated successfully.', 'bulk-featured-image' ), ucwords($current_sub_section) ) );
             }
@@ -433,6 +410,56 @@ if( !class_exists('BFIE_Admin_Fields')) {
 			wp_send_json( $response );
 
 		}
+
+        /**
+         * Set global product image if no individual image is set.
+         *
+         * @since 2.0
+         *
+         * @param int $image_id The current image ID.
+         * @param WC_Product $product The WooCommerce product object.
+         * @return int $image_id The image ID to use.
+         */
+        public function bfie_set_global_product_image( $image_id, $product ) {
+
+            if ( empty( $product ) || ! is_a( $product, 'WC_Product' ) ) {
+                return $image_id;
+            }
+
+            $post_id = $product->get_id();
+            $disable_global = get_post_meta( $post_id, '_bfi_disable_global_image', true );
+
+            if ( ! empty( $image_id ) ) {
+                return $image_id;
+            }
+
+            if ( ! $disable_global ) {
+
+                $bfi_general_settings = bfi_get_settings( 'general' );
+                $enable_default_image = ! empty( $bfi_general_settings['enable_default_image'] ) ? $bfi_general_settings['enable_default_image'] : array();
+
+                if ( ! empty( $enable_default_image ) && in_array( 'product', $enable_default_image ) ) {
+
+                    $bfi_post_type_settings = bfi_get_settings( 'post_types' );
+
+                    if ( ! empty( $bfi_post_type_settings['product']['bfi_upload_file'] ) ) {
+
+                        $default_image_id = (int) $bfi_post_type_settings['product']['bfi_upload_file'];
+
+                        if ( $default_image_id > 0 ) {
+                            return $default_image_id; 
+                        }
+                    }
+                }
+            }
+
+            $gallery_ids = $product->get_gallery_image_ids();
+            if ( ! empty( $gallery_ids ) && is_array( $gallery_ids ) ) {
+                return (int) $gallery_ids[0]; 
+            }
+
+            return $image_id;
+        }
     }
 
     new BFIE_Admin_Fields();

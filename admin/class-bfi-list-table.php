@@ -191,8 +191,24 @@ class BFI_List_Table extends WP_List_Table {
             return '';
         }
         ob_start();
-        $thumb = get_the_post_thumbnail_url( $post_id );
+        $thumb_id = get_post_thumbnail_id( $post_id );
+        $thumb = $thumb_id ? wp_get_attachment_url( $thumb_id ) : '';
 
+        if ( empty( $thumb ) && class_exists('WC_Product') ) {
+            $product = wc_get_product( $post_id );
+            if ( $product ) {
+                $gallery_ids = $product->get_gallery_image_ids();
+                if ( ! empty( $gallery_ids ) ) {
+                    $thumb = wp_get_attachment_url( $gallery_ids[0] );
+                }
+                if ( empty( $thumb ) ) {
+                    $global_image_id = $this->bfie_set_global_product_image( 0, $product );
+                    if ( $global_image_id ) {
+                        $thumb = wp_get_attachment_url( $global_image_id );
+                    }
+                }
+            }
+        }
         $current_page = !empty( $_GET['page']) ? esc_attr($_GET['page']) : get_post_type($post_id);
 
         ?>
