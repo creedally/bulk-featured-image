@@ -191,9 +191,45 @@ class BFI_List_Table extends WP_List_Table {
             return '';
         }
         ob_start();
-        $thumb = get_the_post_thumbnail_url( $post_id );
-
+        $thumb_id = get_post_thumbnail_id( $post_id );
+        $thumb = $thumb_id ? wp_get_attachment_url( $thumb_id ) : '';
         $current_page = !empty( $_GET['page']) ? esc_attr($_GET['page']) : get_post_type($post_id);
+        $page = ! empty( $_POST['current_page'] ) ? esc_attr( $_POST['current_page'] ) : $current_page;
+        if ( empty( $thumb ) && class_exists('WC_Product') && $current_page !== 'bulk-featured-image' && $page !== 'bulk-featured-image' ) {
+            $product = wc_get_product( $post_id );
+            if ( $product ) {
+                $gallery_ids = $product->get_gallery_image_ids();
+                if ( ! empty( $gallery_ids ) ) {
+                    $thumb = wp_get_attachment_url( $gallery_ids[0] );
+                }
+                if ( empty( $thumb ) ) {
+                    $global_image_id = $this->bfie_set_global_product_image( 0, $product );
+                    if ( $global_image_id ) {
+                        $thumb = wp_get_attachment_url( $global_image_id );
+                    }
+                }
+            }
+        } else if ( empty( $thumb ) && ( $page === 'bulk-featured-image' || $current_page === 'bulk-featured-image' ) ) {
+           
+            $disable_global = get_post_meta( $post_id, '_bfi_disable_global_image', true );
+
+            if ( ! $disable_global ) {
+                $bfi_general_settings = bfi_get_settings( 'general' );
+                $enable_default_image = ! empty( $bfi_general_settings['enable_default_image'] ) ? $bfi_general_settings['enable_default_image'] : array();
+
+                if ( ! empty( $enable_default_image ) && in_array( 'product', $enable_default_image ) ) {
+                    $bfi_post_type_settings = bfi_get_settings( 'post_types' );
+
+                    if ( ! empty( $bfi_post_type_settings['product']['bfi_upload_file'] ) ) {
+
+                        $default_image_id = (int) $bfi_post_type_settings['product']['bfi_upload_file'];
+                        if ( $default_image_id > 0 ) {
+                            $thumb = wp_get_attachment_url($default_image_id); 
+                        }
+                    }
+                }
+            }
+        }
 
         ?>
         <div class="bfi-image-uploader-wrap">
@@ -207,9 +243,9 @@ class BFI_List_Table extends WP_List_Table {
             <div class="uploader-preview" id="bfi_upload_preview_<?php echo $post_id; ?>"></div>
         </div>
 	    <?php if( !empty($thumb)) { ?>
-        <div class="bfi-remove-image">
-            <a id="remove-featured-image" class="remove-featured-image" data-current_page="<?php echo $current_page; ?>" data-id="<?php echo $post_id; ?>"><?php esc_html_e( 'Remove image', 'bulk-featured-image' ); ?></a>
-        </div>
+            <div class="bfi-remove-image">
+                <a id="remove-featured-image" disable class="remove-featured-image" data-current_page="<?php echo $current_page; ?>" data-id="<?php echo $post_id; ?>"><?php esc_html_e( 'Remove image', 'bulk-featured-image' ); ?></a>
+            </div>
         <?php } ?>
         <?php 
         $html = ob_get_contents();
