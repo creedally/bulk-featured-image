@@ -225,17 +225,15 @@ if( !class_exists('BFIE_Admin_Fields')) {
             $bfi_get_settings = bfi_get_settings( 'general');
 
             $enable_default_image = !empty($bfi_get_settings['enable_default_image']) ? $bfi_get_settings['enable_default_image'] : '';
-
+            $get_pt_settings = bfi_get_settings('post_types');
+            $get_sub_pt_setting = !empty( $get_pt_settings[$section] ) ? $get_pt_settings[$section] : '';
+            $bfi_upload_file = !empty( $get_sub_pt_setting['bfi_upload_file'] ) ? sanitize_text_field( $get_sub_pt_setting['bfi_upload_file'] ): '';
+            ob_start();
             if( !empty($enable_default_image) && is_array($enable_default_image) && in_array($section, $enable_default_image) ) {
-
-                $get_pt_settings = bfi_get_settings('post_types');
-                $get_sub_pt_setting = !empty( $get_pt_settings[$section] ) ? $get_pt_settings[$section] : '';
-                $bfi_upload_file = !empty( $get_sub_pt_setting['bfi_upload_file'] ) ? sanitize_text_field( $get_sub_pt_setting['bfi_upload_file'] ): '';
-                ob_start();
-                ?>
+            ?>
                 <div class="bfi-image-uploader-wrap">
                     <div class="row">
-                        <div class="uploader-outer col-md-4">
+                        <div class="uploader-outer col-md-4 mb-2">
                             <div class="dragBox">
                                 <span class="d-block"><?php _e('Drag and Drop image here','bulk-featured-image'); ?>
                                     <input type="file" onChange="bfi_drag_drop(event)" name="bfi_upload_file"  ondragover="bfi_drag()" ondrop="bfi_drop()" id="bfi_upload_file" accept=".png,.jpg,.jpeg"  />
@@ -243,7 +241,6 @@ if( !class_exists('BFIE_Admin_Fields')) {
                                 <strong class="d-block my-2"><?php _e('OR','bulk-featured-image'); ?></strong>
                                 <label for="bfi_upload_file" class="btn btn-primary"><?php _e('Upload Image','bulk-featured-image'); ?></label>
                             </div>
-                            <div class="description"><?php _e('If enable default thumbnail settings','bulk-featured-image'); ?></div>
                         </div>
                         <div id="bfi_upload_preview" class="uploader-preview col-md-4">
                             <?php if( !empty($bfi_upload_file) && $bfi_upload_file > 0 ) {  ?>
@@ -252,13 +249,25 @@ if( !class_exists('BFIE_Admin_Fields')) {
                             <?php } ?>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="uploader-outer pr-3 pl-3">
+                            <div class="description">
+                                <p><?php echo sprintf( __( 'If a featured image is not set for a %s, the default featured image will be displayed (if configured).', 'bulk-featured-image' ), ucwords($section) ); ?></p>
+                                <p><?php _e('To disable the global featured image, uncheck the post type from the General Settings.','bulk-featured-image'); ?></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <?php
-                $html = ob_get_contents();
-                ob_get_clean();
-                
-                echo $html;
+            } else {
+                if( !empty($bfi_upload_file) && $bfi_upload_file > 0 ) {  ?>
+                    <input type="hidden" name="bfi_upload_file" value="<?php echo esc_attr($bfi_upload_file); ?>" >
+                <?php } 
             }
+            $html = ob_get_contents();
+            ob_get_clean();
+            
+            echo $html;
         }
 
         public function process_attachment( $file_url, $file_tmp_name ) {
@@ -451,11 +460,6 @@ if( !class_exists('BFIE_Admin_Fields')) {
                         }
                     }
                 }
-            }
-
-            $gallery_ids = $product->get_gallery_image_ids();
-            if ( ! empty( $gallery_ids ) && is_array( $gallery_ids ) ) {
-                return (int) $gallery_ids[0]; 
             }
 
             return $image_id;
