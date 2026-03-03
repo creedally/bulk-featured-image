@@ -25,6 +25,7 @@ if( !class_exists('BFIE_Admin_Fields')) {
 	        add_action( 'manage_posts_custom_column' , array( $this, 'custom_featured_image_column' ),10,2);
 	        add_action( 'wp_ajax_add_featured_image' , array( $this, 'add_featured_image' ));
 
+            add_filter( 'woocommerce_product_get_image_id', array( $this, 'bfie_set_global_product_image' ), 10, 2 );
         }
 
         public function general_settings() {
@@ -209,12 +210,11 @@ if( !class_exists('BFIE_Admin_Fields')) {
             }
 
             update_option( $setting_key, $bfi_settings );
-
+            
             if( $message_updated ) {
                 self::add_message( sprintf(__( 'Your <strong>%s</strong> featured image updated successfully.', 'bulk-featured-image' ), ucwords($current_sub_section) ) );
             }
         }
-
 
         public function add_default_post_type_thumb( $section ) {
 
@@ -225,17 +225,15 @@ if( !class_exists('BFIE_Admin_Fields')) {
             $bfi_get_settings = bfi_get_settings( 'general');
 
             $enable_default_image = !empty($bfi_get_settings['enable_default_image']) ? $bfi_get_settings['enable_default_image'] : '';
-
+            $get_pt_settings = bfi_get_settings('post_types');
+            $get_sub_pt_setting = !empty( $get_pt_settings[$section] ) ? $get_pt_settings[$section] : '';
+            $bfi_upload_file = !empty( $get_sub_pt_setting['bfi_upload_file'] ) ? sanitize_text_field( $get_sub_pt_setting['bfi_upload_file'] ): '';
+            ob_start();
             if( !empty($enable_default_image) && is_array($enable_default_image) && in_array($section, $enable_default_image) ) {
-
-                $get_pt_settings = bfi_get_settings('post_types');
-                $get_sub_pt_setting = !empty( $get_pt_settings[$section] ) ? $get_pt_settings[$section] : '';
-                $bfi_upload_file = !empty( $get_sub_pt_setting['bfi_upload_file'] ) ? sanitize_text_field( $get_sub_pt_setting['bfi_upload_file'] ): '';
-                ob_start();
-                ?>
+            ?>
                 <div class="bfi-image-uploader-wrap">
                     <div class="row">
-                        <div class="uploader-outer col-md-4">
+                        <div class="uploader-outer col-md-4 mb-2">
                             <div class="dragBox">
                                 <span class="d-block"><?php _e('Drag and Drop image here','bulk-featured-image'); ?>
                                     <input type="file" onChange="bfi_drag_drop(event)" name="bfi_upload_file"  ondragover="bfi_drag()" ondrop="bfi_drop()" id="bfi_upload_file" accept=".png,.jpg,.jpeg"  />
@@ -243,7 +241,6 @@ if( !class_exists('BFIE_Admin_Fields')) {
                                 <strong class="d-block my-2"><?php _e('OR','bulk-featured-image'); ?></strong>
                                 <label for="bfi_upload_file" class="btn btn-primary"><?php _e('Upload Image','bulk-featured-image'); ?></label>
                             </div>
-                            <div class="description"><?php _e('If enable default thumbnail settings','bulk-featured-image'); ?></div>
                         </div>
                         <div id="bfi_upload_preview" class="uploader-preview col-md-4">
                             <?php if( !empty($bfi_upload_file) && $bfi_upload_file > 0 ) {  ?>
@@ -252,13 +249,25 @@ if( !class_exists('BFIE_Admin_Fields')) {
                             <?php } ?>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="uploader-outer pr-3 pl-3">
+                            <div class="description">
+                                <p><?php echo sprintf( __( 'If a featured image is not set for a %s, the default featured image will be displayed (if configured).', 'bulk-featured-image' ), ucwords($section) ); ?></p>
+                                <p><?php _e('To disable the global featured image, uncheck the post type from the General Settings.','bulk-featured-image'); ?></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <?php
-                $html = ob_get_contents();
-                ob_get_clean();
-                
-                echo $html;
+            } else {
+                if( !empty($bfi_upload_file) && $bfi_upload_file > 0 ) {  ?>
+                    <input type="hidden" name="bfi_upload_file" value="<?php echo esc_attr($bfi_upload_file); ?>" >
+                <?php } 
             }
+            $html = ob_get_contents();
+            ob_get_clean();
+            
+            echo $html;
         }
 
         public function process_attachment( $file_url, $file_tmp_name ) {
@@ -410,6 +419,51 @@ if( !class_exists('BFIE_Admin_Fields')) {
 			wp_send_json( $response );
 
 		}
+
+        /**
+         * Set global product image if no individual image is set.
+         *
+         * @since 2.0
+         *
+         * @param int $image_id The current image ID.
+         * @param WC_Product $product The WooCommerce product object.
+         * @return int $image_id The image ID to use.
+         */
+        public function bfie_set_global_product_image( $image_id, $product ) {
+
+            if ( empty( $product ) || ! is_a( $product, 'WC_Product' ) ) {
+                return $image_id;
+            }
+
+            $post_id = $product->get_id();
+            $disable_global = get_post_meta( $post_id, '_bfi_disable_global_image', true );
+
+            if ( ! empty( $image_id ) ) {
+                return $image_id;
+            }
+
+            if ( ! $disable_global ) {
+
+                $bfi_general_settings = bfi_get_settings( 'general' );
+                $enable_default_image = ! empty( $bfi_general_settings['enable_default_image'] ) ? $bfi_general_settings['enable_default_image'] : array();
+
+                if ( ! empty( $enable_default_image ) && in_array( 'product', $enable_default_image ) ) {
+
+                    $bfi_post_type_settings = bfi_get_settings( 'post_types' );
+
+                    if ( ! empty( $bfi_post_type_settings['product']['bfi_upload_file'] ) ) {
+
+                        $default_image_id = (int) $bfi_post_type_settings['product']['bfi_upload_file'];
+
+                        if ( $default_image_id > 0 ) {
+                            return $default_image_id; 
+                        }
+                    }
+                }
+            }
+
+            return $image_id;
+        }
     }
 
     new BFIE_Admin_Fields();
