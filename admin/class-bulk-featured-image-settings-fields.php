@@ -241,7 +241,7 @@ if( !class_exists('BFIE_Admin_Fields')) {
                                     <input type="file" onChange="bfi_drag_drop(event)" name="bfi_upload_file"  ondragover="bfi_drag()" ondrop="bfi_drop()" id="bfi_upload_file" accept=".png,.jpg,.jpeg"  />
                                 </span>
                                 <strong class="d-block my-2"><?php _e('OR','bulk-featured-image'); ?></strong>
-                                <label for="bfi_upload_file" class="btn btn-primary"><?php _e('Upload Image','bulk-featured-image'); ?></label>
+                                <label for="bfi_upload_file" class="button-primary"><?php _e('Upload Image','bulk-featured-image'); ?></label>
                             </div>
                             <div class="description"><?php _e('If enable default thumbnail settings','bulk-featured-image'); ?></div>
                         </div>

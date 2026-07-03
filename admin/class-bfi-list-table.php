@@ -235,7 +235,7 @@ class BFI_List_Table extends WP_List_Table {
                             <input type="hidden" name="bfi_upload_post_id[]" value="<?php echo $post_id; ?>" />
                         </span>
                         <strong class="d-block my-2"><?php _e('OR','bulk-featured-image'); ?></strong>
-                        <label for="bfi_upload_file_<?php echo $post_id; ?>" class="btn btn-primary"><?php _e('Upload Image','bulk-featured-image'); ?></label>
+                        <label for="bfi_upload_file_<?php echo $post_id; ?>" class="button-primary"><?php _e('Upload Image','bulk-featured-image'); ?></label>
                     </div>
                 </div>
             </div>
