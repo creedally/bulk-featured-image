@@ -1,161 +1,215 @@
-jQuery( document ).ready(
-	function($) {
-		$( '.bfie-select2' ).select2();
+import 'select2';
+import Swal from 'sweetalert2';
 
-		jQuery( '#bfi_posttyps' ).change(
-			function () {
-				var val = $( this ).val();
-				$( ".enable-default-image" ).parent().hide();
-				$.each(
-					val,
-					function( index, value ) {
-						$( "#enable_default_image_" + value ).parent().show();
-					}
-				);
+(function ($) {
+	'use strict';
 
-			}
-		).change();
+	$(document).ready(function () {
 
-		$( document ).on(
-			'click',
-			'.remove-featured-image',
-			function(event) {
-				var data_id  = $( this ).attr( 'data-id' ),
-				current_page = $( this ).attr( 'data-current_page' ),
-				currentobj   = $( this );
-				if ( confirm( bfie_object.delete_post_message ) ) {
+		if ($.fn.select2) {
+			$('.bfie-select2').select2();
+		}
 
-					bfi_add_loader( currentobj );
+		$('#bfi_posttyps').on('change', function () {
+			var val = $(this).val() || [];
 
-					var data = {
-						'action': 'remove_featured_image',
-						'data_id': data_id,
-						'current_page': current_page,
-					};
-					jQuery.post(
-						bfie_object.ajax_url,
-						data,
-						function(response) {
+			$('.enable-default-image').closest('.bfi-toggle-item').hide();
 
-							if ( response.status ) {
-								$( '.bfi-row-' + data_id + ' .featured-image' ).html( '' ).html( response.html );
-								$( '.post-' + data_id + ' .featured_image' ).html( '' ).html( response.html );
-								bfi_remove_loader( currentobj );
-							} else {
-								bfi_remove_loader( currentobj );
-								alert(bfie_object.removeDefaultMsg);
-							}
-						}
-					);
+			$.each(val, function (index, value) {
+				$('#enable_default_image_' + value).closest('.bfi-toggle-item').show();
+			});
+		}).trigger('change');
+
+		$(document).on('click', '.remove-featured-image', function (e) {
+			e.preventDefault();
+
+			var $btn        = $(this);
+			var dataId      = $btn.attr('data-id');
+			var currentPage = $btn.attr('data-current_page');
+
+			Swal.fire({
+				title: bfie_object.confirm_title,
+				text: bfie_object.delete_post_message,
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: bfie_object.yes_text,
+				cancelButtonText: bfie_object.cancel_text,
+				reverseButtons: true
+			}).then(function (result) {
+
+				if (!result.isConfirmed) {
+					return;
 				}
-			}
-		);
 
-		$( document ).on(
-			'click',
-			'.bfi-img-uploader',
-			function(e){
-				e.preventDefault();
-				let dataId      = $( this ).attr( 'data-id' );
-				var currentobj  = $( this );
-				var button      = $( this ),
-				custom_uploader = wp.media(
-					{
-						title: 'Insert image',
-						library : {
-							// uploadedTo : wp.media.view.settings.post.id, // attach to the current post?
-							type : 'image'
-						},
-						button: {
-							text: 'Use this image' // button label text
-						},
-						multiple: false
+				bfi_add_loader($btn);
+
+				$.post(bfie_object.ajax_url, {
+					action: 'remove_featured_image',
+					data_id: dataId,
+					current_page: currentPage
+				})
+				.done(function (response) {
+					bfi_remove_loader($btn);
+
+					if (response && response.status) {
+						$('.bfi-row-' + dataId + ' .featured-image').html(response.html);
+						$('.post-' + dataId + ' .featured_image').html(response.html);
+
+						Swal.fire({
+							icon: 'success',
+							title: bfie_object.success_title,
+							text: response.message || bfie_object.remove_success_message,
+							timer: 2000,
+							showConfirmButton: false
+						});
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: bfie_object.error_title,
+							text: (response && response.message) || bfie_object.removeDefaultMsg
+						});
 					}
-				).on(
-					'select',
-					function() { // it also has "open" and "close" events
-						var attachment = custom_uploader.state().get( 'selection' ).first().toJSON();
-						bfi_add_loader( currentobj );
-						var data = {
-							'action': 'add_featured_image',
-							'attach_id': attachment,
-							'data_id': dataId,
-						};jQuery.post(
-							bfie_object.ajax_url,
-							data,
-							function(response) {
-								if ( response.status ) {
-									$( '.post-' + dataId + ' .featured_image' ).html( '' ).html( response.html );
-									bfi_remove_loader( currentobj );
-								}
-							}
-						);
+				})
+				.fail(function () {
+					bfi_remove_loader($btn);
+
+					Swal.fire({
+						icon: 'error',
+						title: bfie_object.error_title,
+						text: bfie_object.ajax_error_message
+					});
+				});
+			});
+		});
+
+		$(document).on('click', '.bfi-img-uploader', function (e) {
+			e.preventDefault();
+
+			var $btn   = $(this);
+			var dataId = $btn.attr('data-id');
+
+			var customUploader = wp.media({
+				title: bfie_object.media_title,
+				library: {
+					type: 'image'
+				},
+				button: {
+					text: bfie_object.media_button_text
+				},
+				multiple: false
+			});
+
+			customUploader.on('select', function () {
+				var attachment = customUploader.state().get('selection').first().toJSON();
+
+				bfi_add_loader($btn);
+
+				$.post(bfie_object.ajax_url, {
+					action: 'add_featured_image',
+					attach_id: attachment,
+					data_id: dataId
+				})
+				.done(function (response) {
+					bfi_remove_loader($btn);
+
+					if (response && response.status) {
+						$('.post-' + dataId + ' .featured_image').html(response.html);
+
+						Swal.fire({
+							icon: 'success',
+							title: bfie_object.success_title,
+							text: response.message || bfie_object.add_success_message,
+							timer: 2000,
+							showConfirmButton: false
+						});
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: bfie_object.error_title,
+							text: (response && response.message) || bfie_object.ajax_error_message
+						});
 					}
-				).open();
-			}
-		);
-	}
-);
+				})
+				.fail(function () {
+					bfi_remove_loader($btn);
 
-function bfi_add_loader( id ) {
+					Swal.fire({
+						icon: 'error',
+						title: bfie_object.error_title,
+						text: bfie_object.ajax_error_message
+					});
+				});
+			});
 
-	id.append( '<span class="loader"></span>' );
-}
+			customUploader.open();
+		});
 
-function bfi_remove_loader( id ) {
+		if (typeof bfie_object !== 'undefined' && bfie_object.page_message) {
+			Swal.fire({
+				icon: bfie_object.page_message_type === 'error' ? 'error' : 'success',
+				title: bfie_object.page_message_type === 'error' ? bfie_object.error_title : bfie_object.success_title,
+				html: bfie_object.page_message,
+				timer: 2500,
+				showConfirmButton: false
+			});
+		}
+	});
 
-	id.children().remove( '.loader' );
-}
+	window.bfi_add_loader = function ($el) {
+		if ($el.find('> .loader').length === 0) {
+			$el.append('<span class="loader"></span>');
+		}
+	};
 
-function bfi_drag_drop(event, id='') {
+	window.bfi_remove_loader = function ($el) {
+		$el.children('.loader').remove();
+	};
 
-	var preview_id = 'bfi_upload_preview';
+	window.bfi_drag_drop = function (event, id) {
+		id = id || '';
 
-	if (parseInt(id) > 0) {
-		preview_id += '_' + id;
-		jQuery('#post_thumbnail_url_' + id).parent().remove();
-		jQuery('#no_thumbnail_url_' + id).remove();
-	}
+		var previewId = 'bfi_upload_preview' + (parseInt(id, 10) > 0 ? '_' + id : '');
+		var $preview  = jQuery('#' + previewId);
 
-	var preview = document.getElementById(preview_id);
-	var removeImageButton = jQuery('#bfi_upload_preview_' + id).closest('.bfi-image-uploader-wrap').siblings('.bfi-remove-image');
-	var file = event.target.files[0];
-	preview.innerHTML = "";
+		if (parseInt(id, 10) > 0) {
+			jQuery('#post_thumbnail_url_' + id).parent().remove();
+			jQuery('#no_thumbnail_url_' + id).remove();
+		}
 
-	// Allowed file types
-	var allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+		var file = event.target.files && event.target.files[0];
+		$preview.empty();
 
-	if (!allowedTypes.includes(file.type)) {
-		var errorMsg = document.createElement("div");
-        errorMsg.style.color = "red";
-        errorMsg.style.fontWeight = "bold";
-        errorMsg.innerText = bfie_object.invalidFileType;
-        preview.appendChild(errorMsg);
+		if (!file) {
+			return;
+		}
 
-		removeImageButton.hide();
-		event.target.value = '';
-        return;
-	}
+		var allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
-	var fileName = URL.createObjectURL(file);
-    var previewImg = document.createElement("img");
-    previewImg.setAttribute("src", fileName);
+		if (allowedTypes.indexOf(file.type) === -1) {
+			Swal.fire({
+				icon: 'error',
+				title: bfie_object.error_title,
+				text: bfie_object.invalidFileType
+			});
 
-    preview.appendChild(previewImg);
+			event.target.value = '';
+			return;
+		}
 
-}
+		var fileUrl = URL.createObjectURL(file);
+		$preview.append(jQuery('<img>').attr('src', fileUrl));
+	};
 
-function bfi_drag( event, id ='') {
-	var upload_file = 'bfi_upload_file';
-	if ( parseInt( id ) > 0 ) {
-		upload_file += '_' + id;
-	}
+	window.bfi_drag = function (event) {
+		if (event && event.preventDefault) {
+			event.preventDefault();
+		}
+	};
 
-}
+	window.bfi_drop = function (event) {
+		if (event && event.preventDefault) {
+			event.preventDefault();
+		}
+	};
 
-function bfi_drop( event, id ='') {
-	var upload_file = 'bfi_upload_file';
-	if ( parseInt( id ) > 0 ) {
-		upload_file += '_' + id;
-	}
-}
+})(jQuery);
