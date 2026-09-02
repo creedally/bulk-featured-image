@@ -1,0 +1,1 @@
+import './bulk-featured-image-admin.js'
