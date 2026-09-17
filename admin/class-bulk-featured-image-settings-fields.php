@@ -74,7 +74,7 @@ if( !class_exists('BFIE_Admin_Fields')) {
                 <div class="bfi-field-row">
                     <div class="bfi-field-row__info">
                         <label for="bfi_posttyps" class="bfi-field-row__label"><?php _e( 'Included post types', 'bulk-featured-image' ); ?></label>
-                        <p class="bfi-field-row__desc"><?php _e( 'Content types that appear in BFIE lists and searches.', 'bulk-featured-image' ); ?></p>
+                        <p class="bfi-field-row__desc"><?php _e( 'Content types that appear in BFI lists and searches.', 'bulk-featured-image' ); ?></p>
                     </div>
                     <div class="bfi-field-row__control bfi-field-row__control--full">
                         <select name="bfi_posttyps[]" id="bfi_posttyps" multiple class="bfie-select2 bfi-select">
@@ -410,7 +410,7 @@ if( !class_exists('BFIE_Admin_Fields')) {
                                 <?php esc_html_e( 'IRREVERSIBLE', 'bulk-featured-image' ); ?>
                             </span>
                         </div>
-                        <p class="bfi-uninstall__text"> <?php esc_html_e( 'Deletes all BFIE settings, saved import logs, and default thumbnails when the plugin is deleted through WordPress. Leave unchecked to keep your data in case you reinstall later.', 'bulk-featured-image' ); ?>
+                        <p class="bfi-uninstall__text"> <?php esc_html_e( 'Deletes all BFI settings, saved import logs, and default thumbnails when the plugin is deleted through WordPress. Leave unchecked to keep your data in case you reinstall later.', 'bulk-featured-image' ); ?>
                         </p>
                     </div>
                 </div>

@@ -177,9 +177,15 @@ class BFI_List_Table extends WP_List_Table {
                 $post_id     = get_the_ID();
                 $status      = get_post_status();
 
+                $title = get_the_title();
+
+                if ( empty( $title ) ) {
+                    $title = __( 'No title', 'bulk-featured-image' );
+                }
+
                 $title_html  = '<div class="bfi-title-cell">';
                 $title_html .= '<div class="bfi-title-cell__header">';
-                $title_html .= '<a class="bfi-title-cell__link" href="' . get_edit_post_link() . '">' . get_the_title() . '</a>';
+                $title_html .= '<a class="bfi-title-cell__link" href="' . esc_url( get_edit_post_link() ) . '">' . esc_html( $title ) . '</a>';
                 $title_html .= '<span class="bfi-title-cell__status bfi-title-cell__status--' . esc_attr( $status ) . '">';
                 $title_html .= '<span class="bfi-title-cell__dot"></span>' . ucfirst( $status );
                 $title_html .= '</span>';
@@ -324,10 +330,6 @@ class BFI_List_Table extends WP_List_Table {
                 </div>
             </div>
 
-            <div class="bfi-url-input-wrap">
-                <label for="bfi_image_url_<?php echo $post_id; ?>" class="bfi-url-input-wrap__label"><?php _e( 'OR ENTER IMAGE URL', 'bulk-featured-image' ); ?></label>
-                <input type="url" id="bfi_image_url_<?php echo $post_id; ?>" name="bfi_image_url_<?php echo $post_id; ?>" class="bfi-url-input-wrap__field" placeholder="https://example.com/image.jpg" />
-            </div>
         </div>
         <?php
         return ob_get_clean();

@@ -16,7 +16,9 @@ import Swal from 'sweetalert2';
 			$('.enable-default-image').closest('.bfi-toggle-item').hide();
 
 			$.each(val, function (index, value) {
-				$('#enable_default_image_' + value).closest('.bfi-toggle-item').show();
+				$('.enable-default-image[value="' + value + '"]')
+					.closest('.bfi-toggle-item')
+					.show();
 			});
 		}).trigger('change');
 

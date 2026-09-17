@@ -187,7 +187,7 @@ if( !class_exists( 'BFIE_Admin' ) ) {
 
 			return apply_filters( 'bfie_menu_items', array(
 				'' => __( 'General', 'bulk-featured-image' ),
-				'post_types' => __( 'PostTypes', 'bulk-featured-image' ),
+				'post_types' => __( 'Post Types', 'bulk-featured-image' ),
 				'uninstall' => __( 'Uninstall', 'bulk-featured-image' ),
 			) );
 		}
@@ -366,9 +366,9 @@ if( !class_exists( 'BFIE_Admin' ) ) {
 				<div class="bfi-settings-layout">
 					<div class="bfi-header">
 						<?php $section_label = $current_section ? str_replace( '_', ' ', $current_section ) : 'General'; $section_label = ucwords( $section_label ); ?>
-						<div class="bfi-header__breadcrumb"> <?php echo esc_html__( 'BFIE', 'bulk-featured-image' ); ?> / <?php echo esc_html( $section_label ); ?> <?php echo esc_html__( 'Settings', 'bulk-featured-image' ); ?> </div>
+						<div class="bfi-header__breadcrumb"> <?php echo esc_html__( 'BFI', 'bulk-featured-image' ); ?> / <?php echo esc_html( $section_label ); ?> <?php echo esc_html__( 'Settings', 'bulk-featured-image' ); ?> </div>
 						<h1 class="bfi-header__title"> <?php echo esc_html( $section_label ); ?> Settings </h1>
-						<p class="bfi-header__subtitle"><?php _e( 'Control how BFIE lists, imports, and displays your content.', 'bulk-featured-image' ); ?></p>
+						<p class="bfi-header__subtitle"><?php _e( 'Control how BFI lists, imports, and displays your content.', 'bulk-featured-image' ); ?></p>
 					</div>
 
 					<?php $this->menu(); ?>
