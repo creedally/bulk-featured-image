@@ -11,14 +11,64 @@ import Swal from 'sweetalert2';
 		}
 
 		$('#bfi_posttyps').on('change', function () {
-			var val = $(this).val() || [];
+			var selectedPostTypes = $(this).val() || [];
+			var $toggleGroup = $('.bfi-toggle-group');
+			var toggleStates = {};
 
-			$('.enable-default-image').closest('.bfi-toggle-item').hide();
+			$toggleGroup.find('.enable-default-image').each(function () {
+				toggleStates[$(this).val()] = $(this).prop('checked');
+			});
 
-			$.each(val, function (index, value) {
-				$('.enable-default-image[value="' + value + '"]')
-					.closest('.bfi-toggle-item')
-					.show();
+			$toggleGroup.empty();
+
+			$.each(selectedPostTypes, function (index, value) {
+				var id = 'enable_default_image_' + value;
+				var isChecked = toggleStates[value] || false;
+
+				var $item = $('<div>', {
+					class: 'bfi-toggle-item'
+				});
+
+				var $meta = $('<div>', {
+					class: 'bfi-toggle-item__meta'
+				});
+
+				$meta.append(
+					$('<span>', {
+						class: 'bfi-toggle-item__title',
+						text: value.charAt(0).toUpperCase() + value.slice(1)
+					})
+				);
+
+				$meta.append(
+					$('<span>', {
+						class: 'bfi-toggle-item__sub',
+						text: 'Applies to ' + value
+					})
+				);
+
+				var $label = $('<label>', {
+					class: 'bfi-switch',
+					for: id
+				});
+
+				var $input = $('<input>', {
+					type: 'checkbox',
+					id: id,
+					class: 'bfi-switch__input enable-default-image',
+					name: 'enable_default_image[]',
+					value: value,
+					checked: isChecked
+				});
+
+				var $slider = $('<span>', {
+					class: 'bfi-switch__slider'
+				});
+
+				$label.append($input, $slider);
+				$item.append($meta, $label);
+
+				$toggleGroup.append($item);
 			});
 		}).trigger('change');
 
