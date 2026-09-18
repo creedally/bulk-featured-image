@@ -1,0 +1,10 @@
+@import "select2/dist/css/select2.min.css";
+@import "sweetalert2/dist/sweetalert2.min.css";
+
+@import url("modules/variables.css");
+@import url("modules/bfi-posts-products.css");
+@import url("modules/bfi-settings.css");
+@import url("modules/bfi-unistall-tab.css");
+
+@tailwind components;
+@tailwind utilities;

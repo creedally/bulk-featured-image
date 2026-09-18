@@ -1,0 +1,74 @@
+:root {
+	--bfi-color-primary: #2563eb;
+	--bfi-color-primary-hover: #1d4ed8;
+	--bfi-color-text-primary: #0f172a;
+	--bfi-color-text-secondary: #334155;
+	--bfi-color-text-muted: #64748b;
+	--bfi-color-text-light: #94a3b8;
+	--bfi-color-text-placeholder: #cbd5e1;
+	--bfi-color-bg-white: #ffffff;
+	--bfi-color-bg-page: #f2f2f2b3;
+	--bfi-color-bg-light: #f8fafc;
+	--bfi-color-bg-lighter: #fafafa;
+	--bfi-color-bg-muted: #f1f5f9;
+	--bfi-color-border: #e2e8f0;
+	--bfi-color-border-light: #f1f5f9;
+	--bfi-color-border-muted: #cbd5e1;
+	--bfi-color-blue-50: #eff6ff;
+	--bfi-color-blue-100: #dbeafe;
+	--bfi-color-blue-800: #1e40af;
+	--bfi-color-blue-500: #3b82f6;
+	--bfi-color-success-bg: #dcfce7;
+	--bfi-color-success: #16a34a;
+	--bfi-color-warning-bg: #fef3c7;
+	--bfi-color-warning: #d97706;
+	--bfi-color-warning-icon: #f97316;
+	--bfi-color-danger-bg: #fee2e2;
+	--bfi-color-danger: #dc2626;
+	--bfi-color-danger-text: #ef4444;
+    --bfi-color-text-base: #1e293b;
+    --bfi-color-text-dark: #111827;
+    --bfi-color-border-gray: #d8e0e9;   
+    --bfi-color-danger-light-bg: #fff3f3;
+    --bfi-color-danger-light-border: #f5caca;
+    --bfi-color-text-gray: #4b5563;
+
+	--bfi-shadow-xs: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.03);
+	--bfi-shadow-sm: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.02);
+	--bfi-shadow-md: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.05);
+	--bfi-shadow-border: 0 0.0625rem 0.1875rem rgba(15, 23, 42, 0.03);
+	--bfi-shadow-blue: 0 0 0 0.1875rem rgba(37, 99, 235, 0.08);
+	--bfi-shadow-blue-light: 0 0 0 0.1875rem rgba(37, 99, 235, 0.05);
+
+	--bfi-color-transparent: transparent;
+}
+
+body {
+   background-color: var(--bfi-color-bg-white);
+   font-family: "Inter", sans-serif;
+}
+
+.bfi-admin-wrap,
+.bfi-admin-wrap *,
+.bfi-admin-wrap *::before,
+.bfi-admin-wrap *::after {
+	box-sizing: border-box;
+}
+
+.bfi-admin-wrap {
+   color: var(--bfi-color-text-base);
+   margin-top: 1.25rem;
+   box-sizing: border-box;
+
+    @media (max-width: 64rem) {
+        padding: 1.25rem;
+    }
+
+    @media (max-width: 48rem) {
+        padding: 0 0.625rem;
+    }
+
+    @media (max-width: 37.5rem) {
+        padding: 0.875rem;
+    }
+}

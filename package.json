@@ -1,0 +1,43 @@
+{
+	"name": "bulk-featured-image",
+	"version": "1.0.0",
+	"description": "Easily update or set bulk featured image on the post, page and product.",
+	"main": "index.js",
+	"private": true,
+	"scripts": {
+		"build": "npm run css:build && npm run fonts:copy && npm run js:build",
+		"css:build": "postcss assets/css/index.css --output assets/build/css/bfi-style.min.css",
+		"js:build": "wp-scripts build assets/js/main.js --output-path=assets/build/js --output-filename=bulk-featured-image-admin.min.js",
+		"fonts:copy": "mkdir -p assets/build/fonts && cp -R assets/fonts/. assets/build/fonts/",
+		"watch": "npm run css:watch & npm run js:watch",
+		"css:watch": "postcss assets/css/index.css --output assets/build/css/bfi-style.min.css --watch",
+		"js:watch": "wp-scripts start assets/js/main.js --output-path=assets/build/js --output-filename=bulk-featured-image-admin.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/creedally/bulk-featured-image.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/creedally/bulk-featured-image/issues"
+	},
+	"homepage": "https://github.com/creedally/bulk-featured-image#readme",
+	"devDependencies": {
+		"@wordpress/scripts": "^30.27.0",
+		"autoprefixer": "^10.5.4",
+		"cssnano": "^8.0.5",
+		"postcss": "^8.5.26",
+		"postcss-cli": "^11.0.1",
+		"postcss-custom-media": "^11.0.6",
+		"postcss-import": "^16.2.0",
+		"postcss-mixins": "^11.0.3",
+		"postcss-nested": "^8.0.1",
+		"postcss-preset-env": "^10.6.1",
+		"postcss-simple-vars": "^7.0.1",
+		"select2": "^4.0.13",
+		"sweetalert2": "^11.26.25",
+		"tailwindcss": "^3.4.19"
+	}
+}

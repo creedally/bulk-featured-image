@@ -123,24 +123,39 @@ if ( ! class_exists( 'BFIE' ) ) {
 		 * @since    1.0.0
 		 */
 		public function enqueue_admin_scripts() {
-			
-			if( !empty($_REQUEST['page']) && $_REQUEST['page'] == BFIE_MENU_SLUG ) {
-				wp_enqueue_style('bootstrap-style',BFIE_PLUGIN_URL.'assets/css/bootstrap.min.css');
-			}
-			wp_enqueue_style('select2-style', BFIE_PLUGIN_URL.'assets/css/select2.min.css');
-			wp_enqueue_style('bulk-featured-image',BFIE_PLUGIN_URL.'assets/css/bulk-featured-image-admin.css');
+			$screen        = get_current_screen();
+			$is_bfi_page   = ! empty( $_REQUEST['page'] ) && $_REQUEST['page'] === BFIE_MENU_SLUG;
+			$is_posts_list = $screen && $screen->base === 'edit' && in_array( $screen->post_type, array( 'post', 'product' ), true );
 
-			wp_enqueue_script( 'select2-script', BFIE_PLUGIN_URL . 'assets/js/select2.min.js', array( 'jquery', ), '', true );
-			wp_enqueue_script( 'bulk-featured-image', BFIE_PLUGIN_URL . 'assets/js/bulk-featured-image-admin.js', array( 'jquery', ), '', true );
+			if ( ! $is_bfi_page && ! $is_posts_list ) {
+				return;
+			}
+
+			wp_enqueue_style( 'bulk-featured-image', BFIE_PLUGIN_URL . 'assets/build/css/bfi-style.min.css', array(), '1.0.0' );
+			wp_enqueue_script( 'bulk-featured-image', BFIE_PLUGIN_URL . 'assets/build/js/bulk-featured-image-admin.min.js', array( 'jquery' ), '1.0.1', true );
+			
 			wp_enqueue_media();
 			wp_localize_script(
 				'bulk-featured-image',
 				'bfie_object',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'delete_post_message' => __('Are You sure you want to Remove this Image!','bulk-featured-image' ),
-					'invalidFileType' => __('Invalid file type. Only JPG, JPEG, or PNG files are allowed.','bulk-featured-image' ),
-					'removeDefaultMsg' => __('The default image cannot be removed. Please upgrade to the PRO version to access this feature.','bulk-featured-image' ),
+					'page_message'      => ! empty( BFIE_Admin::get_messages() ) ? implode( ' ', BFIE_Admin::get_messages() ) : '',
+					'page_message_type' => ! empty( BFIE_Admin::get_errors() ) ? 'error' : 'success',
+
+					'confirm_title'       	 => __( 'Are you sure?', 'bulk-featured-image' ),
+					'delete_post_message' 	 => __( 'Are you sure you want to remove this image!', 'bulk-featured-image' ),
+					'yes_text'            	 => __( 'Yes, remove it', 'bulk-featured-image' ),
+					'cancel_text'         	 => __( 'Cancel', 'bulk-featured-image' ),
+					'success_title'          => __( 'Success', 'bulk-featured-image' ),
+					'error_title'   		 => __( 'Error', 'bulk-featured-image' ),
+					'invalidFileType'        => __( 'Invalid file type. Only JPG, JPEG, or PNG files are allowed.', 'bulk-featured-image' ),
+					'removeDefaultMsg'       => __( 'The default image cannot be removed. Please upgrade to the PRO version to access this feature.', 'bulk-featured-image' ),
+					'remove_success_message' => __( 'Thumbnail removed successfully.', 'bulk-featured-image' ),
+					'add_success_message'    => __( 'Featured image updated successfully.', 'bulk-featured-image' ),
+					'ajax_error_message'     => __( 'Something went wrong. Please try again.', 'bulk-featured-image' ),
+					'media_title'       	 => __( 'Insert image', 'bulk-featured-image' ),
+					'media_button_text' 	 => __( 'Use this image', 'bulk-featured-image' ),
 				)
 			);
 		}
