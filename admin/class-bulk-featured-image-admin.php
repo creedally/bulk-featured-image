@@ -271,35 +271,41 @@ if( !class_exists( 'BFIE_Admin' ) ) {
 				$menu_link .= '&tab=' . $current_section;
 			}
 
-			$menu_items = ! empty( $sub_menu_items[ $section ] ) ? $sub_menu_items[ $section ] : array();
-			$bfi_get_settings       = bfi_get_settings( 'general' );
-			$enable_default_image   = ! empty( $bfi_get_settings['enable_default_image'] ) && is_array( $bfi_get_settings['enable_default_image'] ) ? $bfi_get_settings['enable_default_image'] : array();
+			$menu_items = ! empty( $sub_menu_items[ $section ] ) && is_array( $sub_menu_items[ $section ] )
+				? $sub_menu_items[ $section ]
+				: array();
 
-			if ( ! empty( $menu_items ) && is_array( $menu_items ) ) {
-				$menu_items = array_filter(
-					$menu_items,
-					function ( $menu_item ) use ( $enable_default_image ) {
-						$menu_item = sanitize_text_field( $menu_item );
-						return in_array( $menu_item, $enable_default_image, true );
-					}
-				);
+			$sub_section = ! empty( $_REQUEST['section'] )
+				? sanitize_text_field( wp_unslash( $_REQUEST['section'] ) )
+				: '';
+
+			if ( ! empty( $sub_section ) && ! in_array( $sub_section, $menu_items, true ) ) {
+				$sub_section = '';
 			}
 
-			$sub_section = ! empty( $_REQUEST['section'] ) ? sanitize_text_field( $_REQUEST['section'] ) : '';
-			if ( empty( $sub_section ) ) {
-				$sub_section = ! empty( $menu_items[0] ) ? $menu_items[0] : '';
+			if ( empty( $sub_section ) && ! empty( $menu_items[0] ) ) {
+				$sub_section = $menu_items[0];
 			}
 
-			if ( ! empty( $menu_items ) && is_array( $menu_items ) ) {
+			if ( ! empty( $menu_items ) ) {
 				?>
 				<div class="bfi-submenu-wrap">
 					<nav class="bfi-pills-nav">
-						<?php foreach ( $menu_items as $menu_item ) {
-							$active_class = ( ! empty( $menu_item ) && $menu_item === $sub_section ) ? 'is-active' : '';
-							?>
-								<a href="<?php echo esc_url( $menu_link . '&section=' . $menu_item ); ?>" class="bfi-pill-item <?php echo esc_attr( $active_class ); ?>" > <?php echo esc_html( ucfirst( $menu_item ) ); ?> </a>
+						<?php foreach ( $menu_items as $menu_item ) : ?>
+
 							<?php
-						} ?>
+							$menu_item    = sanitize_text_field( $menu_item );
+							$active_class = ( $menu_item === $sub_section ) ? 'is-active' : '';
+							?>
+
+							<a
+								href="<?php echo esc_url( $menu_link . '&section=' . rawurlencode( $menu_item ) ); ?>"
+								class="bfi-pill-item <?php echo esc_attr( $active_class ); ?>"
+							>
+								<?php echo esc_html( ucfirst( $menu_item ) ); ?>
+							</a>
+
+						<?php endforeach; ?>
 					</nav>
 				</div>
 				<?php
