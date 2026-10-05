@@ -380,11 +380,6 @@ if( !class_exists( 'BFIE_Admin' ) ) {
 					<?php $this->menu(); ?>
 					<?php $this->sub_menu(); ?>
 
-					<div class="bfi-notice bfi-notice--info">
-						<span class="bfi-notice__icon">ⓘ</span>
-						<span class="bfi-notice__text"><?php _e( 'Changes apply site-wide the next time a list is rendered. Existing cached lists refresh automatically.', 'bulk-featured-image' ); ?></span>
-					</div>
-
 					<form method="post" id="bfie_form_main" action="" enctype="multipart/form-data">
 						<div class="bfi-content-wrap">
 							<?php

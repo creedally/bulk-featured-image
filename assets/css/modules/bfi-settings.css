@@ -220,35 +220,6 @@
         }
     }
 
-    .bfi-notice {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.75rem 1rem;
-        background-color: var(--bfi-color-blue-50);
-        border: 0.0625rem solid var(--bfi-color-blue-100);
-        border-radius: 0.5rem;
-        color: var(--bfi-color-primary);
-        font-size: 0.8125rem;
-        margin-bottom: 1.5rem;
-
-        @media (max-width: 37.5rem) {
-            padding: 0.625rem 0.75rem;
-            font-size: 0.75rem;
-        }
-
-        &__icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 1.125rem;
-            height: 1.125rem;
-            border-radius: 50%;
-            font-size: 1rem;
-            font-weight: 700;
-        }
-    }
-
     .bfi-card {
         background: var(--bfi-color-bg-white);
         border: 0.0625rem solid var(--bfi-color-border);
